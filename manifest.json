@@ -1,79 +1,82 @@
 {
-  "name": "환기설비",
+  "name": "환기설비 — 기계환기 법정 환기량 산정",
   "short_name": "환기설비",
-  "description": "기계환기설비 법정 환기량 자동 산정 시스템 — 기계설비법 시행규칙 별표3 기준 [MANMIN-Ver2.0]",
+  "description": "기계설비법 시행규칙 기준 법정 환기량 자동 산정 | MANMIN-Ver2.0",
   "start_url": "./index.html",
-  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#f1f0fb",
   "theme_color": "#7c3aed",
-  "orientation": "portrait-primary",
   "lang": "ko",
+  "categories": [
+    "utilities",
+    "productivity"
+  ],
   "icons": [
     {
-      "src": "icons/icon-72x72.jpg",
+      "src": "icons/icon-72x72.png",
       "sizes": "72x72",
-      "type": "image/jpeg"
+      "type": "image/png"
     },
     {
-      "src": "icons/icon-96x96.jpg",
+      "src": "icons/icon-96x96.png",
       "sizes": "96x96",
-      "type": "image/jpeg"
+      "type": "image/png"
     },
     {
-      "src": "icons/icon-128x128.jpg",
+      "src": "icons/icon-128x128.png",
       "sizes": "128x128",
-      "type": "image/jpeg"
+      "type": "image/png"
     },
     {
-      "src": "icons/icon-144x144.jpg",
+      "src": "icons/icon-144x144.png",
       "sizes": "144x144",
-      "type": "image/jpeg"
+      "type": "image/png"
     },
     {
-      "src": "icons/icon-152x152.jpg",
+      "src": "icons/icon-152x152.png",
       "sizes": "152x152",
-      "type": "image/jpeg"
+      "type": "image/png"
     },
     {
-      "src": "icons/icon-180x180.jpg",
-      "sizes": "180x180",
-      "type": "image/jpeg"
-    },
-    {
-      "src": "icons/icon-192x192.jpg",
+      "src": "icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-384x384.jpg",
+      "src": "icons/icon-384x384.png",
       "sizes": "384x384",
-      "type": "image/jpeg"
+      "type": "image/png"
     },
     {
-      "src": "icons/icon-512x512.jpg",
+      "src": "icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "og-image.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "환기설비 법정 환기량 산정 시스템"
     }
   ],
   "shortcuts": [
     {
       "name": "환기량 산정",
       "short_name": "환기량",
-      "description": "법정 기계환기량 바로 산정",
-      "url": "./index.html",
+      "description": "기계환기 환기량 바로 산정",
+      "url": "./index.html#calc",
       "icons": [
         {
-          "src": "icons/icon-192x192.jpg",
+          "src": "icons/icon-192x192.png",
           "sizes": "192x192"
         }
       ]
     }
-  ],
-  "categories": [
-    "utilities",
-    "productivity"
   ]
 }
