@@ -186,14 +186,36 @@ input[type="number"]{-moz-appearance:textfield;}
     grid-column:1 / -1;
   }
 }
-/* 모바일 767px 이하: 1열 */
+/* 소형 태블릿 600~767px: 좌우 아닌 위아래 1열 — 모바일과 동일 처리 */
+@media(max-width:767px) and (min-width:600px){
+  .three-col{
+    grid-template-columns:1fr !important;
+  }
+}
+/* 모바일 767px 이하: 1열 + STEP 순서 보장 */
 @media(max-width:767px){
   .three-col{
-    grid-template-columns:1fr;
+    grid-template-columns:1fr !important;
     gap:10px;
+    display:flex;
+    flex-direction:column;
   }
   .col-result.visible{
     grid-column:1 / -1;
+  }
+  /* 모바일: STEP1/2(col-info) → STEP3(col-input) → STEP4(resultPanel) 순서 */
+  .three-col .col-info{
+    order:1;
+    width:100%;
+  }
+  .three-col .col-input{
+    order:2;
+    width:100%;
+  }
+  .three-col #resultPanel,
+  .three-col .col-result{
+    order:3;
+    width:100%;
   }
 }
 /* 결과 미산정 시 desktop 3열 → 2열처럼 좁히기 */
