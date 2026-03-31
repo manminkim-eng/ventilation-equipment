@@ -1,22 +1,49 @@
-// 환기설비 PWA Service Worker — MANMIN-Ver2.0
-const CACHE = 'ventilation-v2';
-const ASSETS = ['./', './index.html', './manifest.json',
-  './hero-bg.jpg',
-  'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Noto+Serif+KR:wght@700&display=swap'
+/* ═══════════════════════════════════════
+   환기설비 PWA Service Worker
+   MANMIN-Ver2.0  |  Cache-First
+═══════════════════════════════════════ */
+const CACHE = 'hwangi-v2.0';
+const ASSETS = [
+  './', './index.html', './manifest.json', './sw.js',
+  './icons/brand-icon.jpg', './icons/icon-192.png',
+  './icons/icon-512.png',   './icons/apple-touch-icon.png',
+  './icons/favicon-32.png', './icons/favicon-16.png',
 ];
+
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS).catch(()=>{})).then(()=>self.skipWaiting()));
+  e.waitUntil(
+    caches.open(CACHE).then(c =>
+      Promise.allSettled(ASSETS.map(u =>
+        c.add(u).catch(err => console.warn('[SW] skip:', u, err))
+      ))
+    ).then(() => self.skipWaiting())
+  );
 });
+
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
 });
+
 self.addEventListener('fetch', e => {
-  if(e.request.method!=='GET') return;
-  e.respondWith(caches.match(e.request).then(c=>{
-    if(c) return c;
-    return fetch(e.request).then(r=>{
-      if(!r||r.status!==200||r.type==='opaque') return r;
-      const clone=r.clone(); caches.open(CACHE).then(c=>c.put(e.request,clone)); return r;
-    }).catch(()=>e.request.destination==='document'?caches.match('./index.html'):undefined);
-  }));
+  if(e.request.method !== 'GET') return;
+  if(!e.request.url.startsWith(self.location.origin)) return;
+  e.respondWith(
+    caches.match(e.request).then(cached => {
+      if(cached) return cached;
+      return fetch(e.request).then(res => {
+        if(!res || res.status !== 200 || res.type !== 'basic') return res;
+        const clone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+        return res;
+      }).catch(() => caches.match('./index.html'));
+    })
+  );
+});
+
+self.addEventListener('message', e => {
+  if(e.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
