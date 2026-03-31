@@ -186,36 +186,20 @@ input[type="number"]{-moz-appearance:textfield;}
     grid-column:1 / -1;
   }
 }
-/* 소형 태블릿 600~767px: 좌우 아닌 위아래 1열 — 모바일과 동일 처리 */
-@media(max-width:767px) and (min-width:600px){
-  .three-col{
-    grid-template-columns:1fr !important;
-  }
-}
-/* 모바일 767px 이하: 1열 + STEP 순서 보장 */
+/* ★ 모바일 767px 이하: 완전 1열 수직 스택 — STEP1→STEP2→STEP3→STEP4 순서 */
 @media(max-width:767px){
   .three-col{
-    grid-template-columns:1fr !important;
+    display:flex !important;
+    flex-direction:column !important;
     gap:10px;
-    display:flex;
-    flex-direction:column;
-  }
-  .col-result.visible{
-    grid-column:1 / -1;
-  }
-  /* 모바일: STEP1/2(col-info) → STEP3(col-input) → STEP4(resultPanel) 순서 */
-  .three-col .col-info{
-    order:1;
     width:100%;
   }
-  .three-col .col-input{
-    order:2;
-    width:100%;
-  }
-  .three-col #resultPanel,
-  .three-col .col-result{
-    order:3;
-    width:100%;
+  .three-col>.col-info,
+  .three-col>.col-input,
+  .three-col>#resultPanel{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
   }
 }
 /* 결과 미산정 시 desktop 3열 → 2열처럼 좁히기 */
@@ -405,11 +389,12 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
 #resultPanel{display:none;}
 #resultPanel.visible{display:block;}
 
-/* 결과 미산정 시 desktop 3열 → 2열처럼 보이게 */
-.three-col:has(#resultPanel:not(.visible)){
-  grid-template-columns:320px 320px;
+/* 결과 미산정 시 desktop 3열 → 2열처럼 보이게 (데스크탑만 적용) */
+@media(min-width:768px){
+  .three-col:has(#resultPanel:not(.visible)){
+    grid-template-columns:320px 320px;
+  }
 }
-/* :has 미지원 브라우저 fallback — 결과 없을 때도 레이아웃 유지 */
 
 /* ── GUIDE MODAL TABS ── */
 /* gm-tab/gm-panel 제거됨 */
