@@ -2,7 +2,7 @@
    환기설비 PWA Service Worker
    MANMIN-Ver2.0  |  Cache-First
 ═══════════════════════════════════════ */
-const CACHE = 'hwangi-v2.0';
+const CACHE = 'hwangi-v2.1';
 const ASSETS = [
   './', './index.html', './manifest.json', './sw.js',
   './icons/brand-icon.jpg', './icons/icon-192.png',
