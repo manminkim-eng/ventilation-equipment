@@ -19,7 +19,7 @@
       SW 가 아예 안 붙는다 → allSettled + 개별 catch 로 감쌌다(§11-3).
 ═══════════════════════════════════════════════════ */
 const PREFIX = 'hwangi-';
-const CACHE  = 'hwangi-v5.0.2';
+const CACHE  = 'hwangi-v5.0.3';
 
 const ASSETS = [
   './',
