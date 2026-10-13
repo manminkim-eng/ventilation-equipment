@@ -371,8 +371,8 @@
  },
  "mobile": {
   "page": 390,
-  "tabbar": 390,
+  "tabbar": 599,
   "vw": 390,
-  "manualVisible": true
+  "manualVisible": false
  }
 }
