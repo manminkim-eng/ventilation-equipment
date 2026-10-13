@@ -731,11 +731,11 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
 
       <!-- 건물 용도 선택 -->
       <div class="card">
-        <div class="card-head"><div class="card-ico">🏢</div><div class="card-tit">STEP 2 · 건물(공간) 용도 선택</div><span class="cbadge org">기계설비 기술기준 별표3</span></div>
+        <div class="card-head"><div class="card-ico">🏢</div><div class="card-tit">STEP 2 · 건물(공간) 용도 선택</div><span class="cbadge org">설계 권장 · 설비규칙 제11조</span></div>
         <div class="card-body">
           <div class="nb blue" style="margin-bottom:10px;">
             <div class="nb-tit">ℹ️ 환기횟수 기준</div>
-            <div class="nb-txt">용도별 환기횟수(회/h)는 기계설비 기술기준·KDS 31 25 00 기반 설계 권장값이며, 법정 최소 환기기준은 「건축물의 설비기준 등에 관한 규칙」 제11조를 따릅니다. 1회/h = 1시간당 해당 공간 체적만큼 환기.</div>
+            <div class="nb-txt">용도별 환기횟수(회/h)는 설계 권장값(공동주택 0.5회/h만 법정)이며, 법정 필요환기량은 「건축물의 설비기준 등에 관한 규칙」 제11조·별표 1의6과 기계설비 기술기준 별표3 2.1.2를 따릅니다. 1회/h = 1시간당 해당 공간 체적만큼 환기.</div>
           </div>
           <div class="btype-grid" id="btypeGrid">
             <!-- JS로 생성 -->
@@ -812,7 +812,7 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
         <div class="card-head"><div class="card-ico">📊</div><div class="card-tit">STEP 4 · 환기량 산정 결과</div><span class="cbadge" id="judgeTag">산정 중</span></div>
         <div class="card-body">
           <div class="result-hero rh-blue" id="heroMain">
-            <div class="rh-sub">법정 최소 환기량 (환기횟수 기준)</div>
+            <div class="rh-sub">기준 환기량 Max(체적·법정 필요환기량)</div>
             <div class="rh-val" id="heroVal">—</div>
             <div class="rh-unit">m³/h</div>
             <div class="rh-badge" id="heroBadge">💨 산정 대기</div>
@@ -838,14 +838,14 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
 
           <!-- 인원 기준 검토 -->
           <div id="personCheck" style="display:none;" class="nb org">
-            <div class="nb-tit">👤 인원 기준 환기량 검토</div>
+            <div class="nb-tit">👤 법정 필요환기량 검토</div>
             <div class="nb-txt" id="personCheckTxt"></div>
           </div>
 
           <!-- 상세 산출 -->
           <div class="formula-box">
             <div class="formula-title">📐 산출 근거</div>
-            <div class="formula-eq" id="formulaEq">Q = V × N<br>Q: 법정 환기량 [m³/h], V: 체적 [m³], N: 환기횟수 [회/h]</div>
+            <div class="formula-eq" id="formulaEq">Q = V × N<br>Q: 체적 기준 환기량 [m³/h], V: 체적 [m³], N: 환기횟수 [회/h]</div>
             <div class="formula-note" id="formulaNote">건물 용도와 면적을 입력하여 산정하세요.</div>
           </div>
 
@@ -889,7 +889,7 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
 <div class="tab-panel" id="tab-multi">
   <div class="nb blue" style="margin-bottom:12px;">
     <div class="nb-tit">📋 다중 구역 일괄 환기량 산정</div>
-    <div class="nb-txt">여러 공간(구역)의 환기량을 한 번에 산정합니다. 각 구역의 용도·면적·층고를 입력하면 법정 환기량을 자동 산정하고 전체 합계를 도출합니다.</div>
+    <div class="nb-txt">여러 공간(구역)의 환기량을 한 번에 산정합니다. 각 구역의 용도·면적·층고를 입력하면 체적 기준 환기량(V × N)을 자동 산정하고 전체 합계를 도출합니다.</div>
   </div>
 
   <div class="card">
@@ -907,7 +907,7 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
             <th>층고(m)</th>
             <th>체적(m³)</th>
             <th>환기횟수<br>(회/h)</th>
-            <th>법정환기량<br>(m³/h)</th>
+            <th>체적기준<br>환기량(m³/h)</th>
             <th>설계환기량<br>(여유율10%)</th>
             <th style="width:44px;">삭제</th>
           </tr>
@@ -949,8 +949,8 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
 <!-- ═══ TAB 3: 설계 기준표 ═══ -->
 <div class="tab-panel" id="tab-guide">
   <div class="nb blue" style="margin-bottom:12px;">
-    <div class="nb-tit">📐 기계환기설비 설계 기준 — 기계설비 기술기준 별표3(설계·시공) · 설비기준규칙 제11조(법정 최소)</div>
-    <div class="nb-txt">국토교통부 고시 제2021-851호(2021.06.07.)에 따른 기계환기설비의 설계 및 시공 기준입니다.</div>
+    <div class="nb-tit">📐 기계환기설비 설계 기준 — 기계설비 기술기준 별표3(설계·시공) · 설비기준규칙 제11조·별표 1의6(법정)</div>
+    <div class="nb-txt">국토교통부 고시 제2021-851호(제2026-360호 타법개정, 2026.7.8. 시행) 기계설비 기술기준과 「건축물의 설비기준 등에 관한 규칙」(2026.8.24. 시행)에 따른 기계환기설비의 설계 기준입니다.</div>
   </div>
 
   <div class="card">
@@ -963,28 +963,30 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
 
       <div class="formula-box">
         <div class="formula-title">📐 환기량 산출식</div>
-        <div class="formula-eq">Q = V × N&nbsp;&nbsp;&nbsp;[m³/h]<br><br>Q : 법정 환기량 [m³/h]<br>V : 환기 공간의 체적 [m³] = 바닥면적[m²] × 층고[m]<br>N : 기준 환기횟수 [회/h]</div>
+        <div class="formula-eq">Q = V × N&nbsp;&nbsp;&nbsp;[m³/h]<br><br>Q : 체적 기준 환기량 [m³/h]<br>V : 환기 공간의 체적 [m³] = 바닥면적[m²] × 층고[m]<br>N : 기준 환기횟수 [회/h]</div>
         <div class="formula-note">
           ※ 체적 V는 건물 단면 형상에 따라 실제 체적(경사천장 등)을 적용합니다.<br>
           ※ 외기도입량은 전체 환기량의 최소 30% 이상 확보 (공조방식에 따라 상이)<br>
-          ※ 설계 환기량은 법정 최소값에 여유율(10~20%) 적용 권장
+          ※ 기준 환기량 = Max(체적 기준, 법정 필요환기량 — 설비규칙 별표 1의6 · 기술기준 별표3 2.1.2)<br>
+          ※ 설계 환기량은 기준 환기량에 여유율(10~20%) 적용 권장
         </div>
       </div>
     </div>
   </div>
 
   <div class="card" style="margin-top:0;">
-    <div class="card-head"><div class="card-ico">🌬️</div><div class="card-tit">환기설비 설치 대상 건축물</div><span class="cbadge pur">기계설비법 시행령</span></div>
+    <div class="card-head"><div class="card-ico">🌬️</div><div class="card-tit">환기설비 설치 대상 건축물</div><span class="cbadge pur">설비규칙 제11조·별표 1의6</span></div>
     <div class="card-body">
       <table class="gtbl">
         <thead><tr><th>구분</th><th>대상 건축물</th><th>적용 기준</th></tr></thead>
         <tbody>
-          <tr><td>의무 설치</td><td>신축 공동주택, 다중이용시설, 의료시설, 교육시설</td><td>기계설비법 제21조</td></tr>
-          <tr><td>권고 설치</td><td>연면적 500m² 이상 건축물(신축·리모델링)</td><td>설비기준규칙 제11조</td></tr>
-          <tr><td>전용주거</td><td>공동주택(아파트·기숙사 등)</td><td>0.7회/h 이상</td></tr>
-          <tr><td>다중이용</td><td>백화점·판매시설·영화관·공연장 등</td><td>인당 25㎥/h 이상(제11조)</td></tr>
-          <tr><td>의료</td><td>병원·의원·요양시설</td><td>2.0~6.0회/h</td></tr>
-          <tr><td>교육</td><td>학교·학원·도서관</td><td>1.5~2.0회/h</td></tr>
+          <tr><td>의무 설치</td><td>30세대 이상 신축·리모델링 공동주택(주상복합 포함)</td><td>제11조① · 0.5회/h 이상</td></tr>
+          <tr><td>권장 설치</td><td>30세대 미만 공동주택·단독주택</td><td>제11조④ · 0.5회/h 이상 권장</td></tr>
+          <tr><td>의무 설치</td><td>별표 1의6 제1호 다중이용시설(신축)</td><td>제11조⑤ · 시설이용 인원당</td></tr>
+          <tr><td>다중이용</td><td>문화·집회 / 판매 / 운수 / 업무</td><td>29 ㎥/인·h 이상</td></tr>
+          <tr><td>다중이용</td><td>의료 / 교육연구 / 노유자 / 장례식장 / 지하도상가</td><td>36 ㎥/인·h 이상</td></tr>
+          <tr><td>다중이용</td><td>지하역사 / 그 밖의 시설</td><td>25 ㎥/인·h 이상</td></tr>
+          <tr><td>다중이용</td><td>실내주차장(연면적 2천㎡ 이상)</td><td>27 ㎥/㎡·h 이상</td></tr>
         </tbody>
       </table>
     </div>
@@ -1005,7 +1007,7 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
       </div>
     </div>
     <div class="card">
-      <div class="card-head"><div class="card-ico">📏</div><div class="card-tit">1인당 외기량 기준 (ASHRAE 62.1)</div></div>
+      <div class="card-head"><div class="card-ico">📏</div><div class="card-tit">1인당 외기량 참고 (ASHRAE 62.1 · 법정 기준 아님)</div></div>
       <div class="card-body">
         <table class="gtbl">
           <thead><tr><th>용도</th><th>L/s·인</th><th>m³/h·인</th></tr></thead>
@@ -1080,15 +1082,15 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
       <div class="modal-sec">📐 환기량 계산 원리</div>
       <div class="formula-box">
         <div class="formula-title">기본 산출식</div>
-        <div class="formula-eq">Q = V × N [m³/h]<br><br>V = A × h [m³]<br>  A: 바닥면적 [m²], h: 층고 [m]<br><br>Q_design = Q × (1 + margin/100)</div>
+        <div class="formula-eq">Q = V × N [m³/h]<br><br>V = A × h [m³]<br>  A: 바닥면적 [m²], h: 층고 [m]<br><br>Q_base = Max(Q, 인원 × 필요환기량)<br>Q_design = Q_base × (1 + margin/100)</div>
         <div class="formula-note">
-          Q: 법정 최소 환기량 [m³/h]<br>
+          Q: 체적 기준 환기량 [m³/h]<br>
           V: 환기 공간 체적 [m³]<br>
           N: 기준 환기횟수 [회/h] (용도별 설계 권장값)<br>
           Q_design: 설계 환기량 (여유율 반영)
         </div>
       </div>
-      <div class="nb org"><div class="nb-tit">⚠️ 인원 기준과 체적 기준 비교</div><div class="nb-txt">인원 기준 환기량(1인당 25~36 m³/h)을 함께 검토하여 더 큰 값을 설계 기준으로 적용하는 것을 권장합니다.</div></div>
+      <div class="nb org"><div class="nb-tit">⚠️ 인원 기준과 체적 기준 비교</div><div class="nb-txt">재실 인원을 입력하면 「건축물의 설비기준 등에 관한 규칙」 별표 1의6의 용도별 필요 환기량(25~36 ㎥/인·h, 그 밖의 용도는 기술기준 별표3 2.1.2(2) 25 ㎥/인·h 이상)으로 계산해 체적 기준과 비교하고 큰 값을 적용합니다. 주차장은 별표 1의6 자목 27 ㎥/㎡·h(바닥면적 기준)로 비교합니다.</div></div>
       <table class="gtbl">
         <thead><tr><th>환기방식</th><th>외기도입 비율</th><th>특징</th></tr></thead>
         <tbody>
@@ -1123,37 +1125,37 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
       <table class="gtbl">
         <thead><tr><th>법령</th><th>내용</th></tr></thead>
         <tbody>
-          <tr><td>기계설비법 제21조</td><td>기계환기설비 설치 의무</td></tr>
-          <tr><td>건축물의 설비기준 규칙 제11조</td><td>법정 최소 환기(공동주택 0.5회/h·다중이용 25㎥/h·인·주차장 2회/h). 용도별 회/h는 설계 권장 참고값</td></tr>
-          <tr><td>기계설비 기술기준 별표3</td><td>환기설비 설계·시공 기준</td></tr>
-          <tr><td>건축물의 설비기준 등에 관한 규칙</td><td>환기설비 기준 상세</td></tr>
+          <tr><td>기계설비법 제14조</td><td>기계설비 기술기준 고시 근거</td></tr>
+          <tr><td>건축물의 설비기준 규칙 제11조</td><td>공동주택 0.5회/h 이상(①) · 다중이용시설 필요 환기량 별표 1의6(⑤). 용도별 회/h는 설계 권장 참고값</td></tr>
+          <tr><td>기계설비 기술기준 별표3</td><td>환기설비 설계·시공 기준(일반 건축물 25 ㎥/인·h 이상)</td></tr>
+          <tr><td>설비규칙 별표 1의5 · 1의6</td><td>공동주택 기계환기설비 기준 · 다중이용시설 필요 환기량</td></tr>
         </tbody>
       </table>
-      <div class="nb pur"><div class="nb-tit">📌 고시 기준</div><div class="nb-txt">국토교통부 고시 제2021-851호(2021.06.07.) 기계설비 기술기준을 기준으로 합니다.</div></div>
+      <div class="nb pur"><div class="nb-tit">📌 고시 기준</div><div class="nb-txt">국토교통부 고시 제2021-851호(제2026-360호 타법개정, 2026.7.8. 시행) 기계설비 기술기준을 기준으로 합니다.</div></div>
       <table class="gtbl">
-        <thead><tr><th>구분</th><th>대상</th><th>환기횟수</th></tr></thead>
+        <thead><tr><th>구분</th><th>대상</th><th>법정 기준</th></tr></thead>
         <tbody>
-          <tr><td>공동주택</td><td>아파트·기숙사</td><td>0.7 회/h 이상</td></tr>
-          <tr><td>다중이용시설</td><td>백화점·영화관·공연장</td><td>인당 25㎥/h 이상(제11조)</td></tr>
-          <tr><td>의료시설</td><td>병원·의원·요양원</td><td>2.0~6.0 회/h</td></tr>
-          <tr class="hl"><td>지하주차장</td><td>자동차 주차장</td><td>5.0 회/h 이상</td></tr>
+          <tr><td>공동주택</td><td>30세대 이상 신축공동주택등</td><td>0.5 회/h 이상 (제11조①)</td></tr>
+          <tr><td>다중이용시설</td><td>문화·집회·판매·운수·업무</td><td>29 ㎥/인·h 이상 (별표 1의6)</td></tr>
+          <tr><td>의료·교육연구</td><td>의료기관·도서관·학원 등</td><td>36 ㎥/인·h 이상 (별표 1의6)</td></tr>
+          <tr class="hl"><td>실내주차장</td><td>연면적 2천㎡ 이상</td><td>27 ㎥/㎡·h 이상 (별표 1의6)</td></tr>
         </tbody>
       </table>
 
       <!-- ── 관련 자료 ── -->
       <div class="modal-sec">📋 관련 법령 및 기준 자료</div>
-      <div class="nb blue"><div class="nb-tit">📌 기계설비법 (법률 제17453호)</div><div class="nb-txt">기계설비의 설치·유지관리에 관한 사항을 규정. 2020년 6월 9일 시행. 기계설비 기술기준 및 환기설비 설치 의무 근거.</div></div>
-      <div class="nb pur"><div class="nb-tit">📌 기계설비 기술기준 (국토부 고시 제2021-851호)</div><div class="nb-txt">2021년 6월 7일 고시. 별표3: 환기설비 설계·시공 기준. 별표9: 덕트설비 설계·시공 기준.</div></div>
+      <div class="nb blue"><div class="nb-tit">📌 기계설비법 (법률 제17453호)</div><div class="nb-txt">기계설비의 설치·유지관리에 관한 사항을 규정. 2020년 6월 9일 시행. 제14조 — 기계설비 기술기준 고시 근거.</div></div>
+      <div class="nb pur"><div class="nb-tit">📌 기계설비 기술기준 (국토부 고시 제2021-851호)</div><div class="nb-txt">최종 타법개정 고시 제2026-360호, 2026.7.8. 시행. 별표3: 환기설비 설계·시공 기준. 별표9: 덕트설비 설계·시공 기준.</div></div>
       <div class="nb org"><div class="nb-tit">📌 건축물의 설비기준 등에 관한 규칙</div><div class="nb-txt">환기설비 기준 및 에너지절약 설비 상세 규정. 건축법 시행규칙과 연계하여 기계설비 설계에 적용.</div></div>
       <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
         <a class="help-link-item" href="https://www.law.go.kr/lsBylInfoPLinkR.do?lsiSeq=233451" target="_blank" rel="noopener">
           <span class="help-link-icon">⚖️</span>
-          <div class="help-link-info"><div class="help-link-title">기계설비법 (법률 제17453호)</div><div class="help-link-desc">기계환기설비 법정 기준 근거 법령</div></div>
+          <div class="help-link-info"><div class="help-link-title">기계설비법 (법률 제17453호)</div><div class="help-link-desc">제14조 기계설비 기술기준 근거 법령</div></div>
           <span class="help-link-badge">법령</span>
         </a>
         <a class="help-link-item" href="https://www.molit.go.kr/USR/I0204/m_45/dtl.jsp?idx=17748" target="_blank" rel="noopener">
           <span class="help-link-icon">📋</span>
-          <div class="help-link-info"><div class="help-link-title">기계설비 기술기준 (고시 제2021-851호)</div><div class="help-link-desc">별표 3 — 환기설비 설계 및 시공 기준</div></div>
+          <div class="help-link-info"><div class="help-link-title">기계설비 기술기준 (고시 제2021-851호 · 2026.7.8. 시행)</div><div class="help-link-desc">별표 3 — 환기설비 설계 및 시공 기준</div></div>
           <span class="help-link-badge">고시</span>
         </a>
         <a class="help-link-item" href="https://www.kcsc.re.kr/StandardCode/Viewer/14779" target="_blank" rel="noopener">
@@ -1177,15 +1179,15 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
       <div class="modal-sec">💬 자주 묻는 질문</div>
       <div class="faq-item">
         <div class="faq-q" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">❓ 법정 환기량은 어떻게 계산되나요? <span>▾</span></div>
-        <div class="faq-a" style="display:none;">법정 환기량(㎥/h)은 <strong>바닥면적 × 환기횟수(회/h)</strong> 또는 <strong>재실인원 × 1인당 환기량</strong>으로 산정하며, 기술기준 별표 3의 용도별 기준값을 적용합니다.</div>
+        <div class="faq-a" style="display:none;">환기량(㎥/h)은 <strong>체적 × 환기횟수(회/h)</strong>와 <strong>재실인원 × 1인당 필요 환기량</strong>(설비규칙 별표 1의6 · 기술기준 별표3 2.1.2) 중 큰 값에 여유율을 더해 산정합니다.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">❓ 공동주택과 업무시설의 환기 기준이 다른가요? <span>▾</span></div>
-        <div class="faq-a" style="display:none;">네, 용도별로 기준이 다릅니다. 공동주택은 <strong>0.7회/h</strong> 이상, 다중이용시설은 용도별 별표3 기준을 적용합니다. 용도 선택 시 해당 기준값이 자동 적용됩니다.</div>
+        <div class="faq-a" style="display:none;">네, 용도별로 기준이 다릅니다. 공동주택은 <strong>0.5회/h</strong> 이상(설비규칙 제11조①), 다중이용시설은 별표 1의6의 용도별 필요 환기량(25~36 ㎥/인·h)을 적용합니다. 그 밖의 용도별 회/h는 설계 권장값이며 용도 선택 시 자동 적용됩니다.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">❓ 덕트 규격은 어떻게 결정되나요? <span>▾</span></div>
-        <div class="faq-a" style="display:none;">계산된 환기량과 <strong>덕트 내 풍속(m/s)</strong>을 기반으로 필요 단면적을 산출하고, 이에 맞는 표준 덕트 규격을 제안합니다. 풍속은 주덕트 8m/s, 분기덕트 6m/s 기준을 적용합니다.</div>
+        <div class="faq-a" style="display:none;">계산된 환기량과 <strong>덕트 내 풍속(m/s)</strong>을 기반으로 필요 단면적을 산출하고, 이에 맞는 표준 덕트 규격을 제안합니다. 권장 풍속은 급기 주덕트 5~8 m/s, 분기덕트 3~6 m/s(최대 10·8 m/s) 범위를 참고합니다.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">❓ 오프라인에서도 사용할 수 있나요? <span>▾</span></div>
@@ -1209,27 +1211,27 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
 
 <script>
 // ═══════════════════════════════════════════════
-// 환기횟수 데이터 (기계설비 기술기준 기반 설계 권장값 · 법정 최소는 설비기준규칙 제11조)
+// 환기횟수 데이터 (설계 권장값 · 공동주택 0.5회/h는 설비규칙 제11조① · pq/aq는 별표 1의6 필요 환기량)
 // ═══════════════════════════════════════════════
 const BTYPE_DATA = [
-  { id:'apt',     ico:'🏠', nm:'공동주택',     val:'0.7',  rate:0.7,  basis:'설계권장·체적기준',  note:'아파트·기숙사 등' },
-  { id:'office',  ico:'🏢', nm:'사무실',       val:'1.0',  rate:1.0,  basis:'설계권장·체적기준',  note:'일반사무, 업무용' },
-  { id:'store',   ico:'🛒', nm:'판매시설',     val:'1.5',  rate:1.5,  basis:'설계권장·체적기준',  note:'백화점·쇼핑몰' },
-  { id:'rest',    ico:'🍽️', nm:'식당·음식점', val:'2.0',  rate:2.0,  basis:'설계권장·체적기준',  note:'일반음식점' },
-  { id:'hotel',   ico:'🏨', nm:'숙박·호텔',   val:'1.5',  rate:1.5,  basis:'설계권장·체적기준',  note:'호텔·모텔·여관' },
-  { id:'hospital',ico:'🏥', nm:'병원·의료',   val:'2.0',  rate:2.0,  basis:'설계권장·체적기준',  note:'병원·의원·한의원' },
-  { id:'school',  ico:'🏫', nm:'학교·교육',   val:'1.5',  rate:1.5,  basis:'설계권장·체적기준',  note:'학교·학원' },
-  { id:'lib',     ico:'📚', nm:'도서관',       val:'1.0',  rate:1.0,  basis:'설계권장·체적기준',  note:'공공도서관' },
-  { id:'theater', ico:'🎬', nm:'공연·영화관', val:'2.5',  rate:2.5,  basis:'설계권장·체적기준',  note:'극장·영화관' },
-  { id:'sport',   ico:'🏋️', nm:'체육·스포츠', val:'3.0',  rate:3.0,  basis:'설계권장·체적기준',  note:'체육관·헬스장' },
-  { id:'park',    ico:'🅿️', nm:'주차장',      val:'5.0',  rate:5.0,  basis:'설계권장·체적기준',  note:'지하주차장 등' },
-  { id:'wc',      ico:'🚻', nm:'화장실',       val:'10.0', rate:10.0, basis:'설계권장·체적기준',  note:'공중·업무용화장실' },
-  { id:'kitchen', ico:'🍳', nm:'주방·조리실', val:'20.0', rate:20.0, basis:'설계권장·체적기준',  note:'업소용 주방' },
-  { id:'lab',     ico:'🔬', nm:'실험실',       val:'6.0',  rate:6.0,  basis:'설계권장·체적기준',  note:'연구·실험공간' },
-  { id:'meet',    ico:'📊', nm:'회의실',       val:'1.5',  rate:1.5,  basis:'설계권장·체적기준',  note:'세미나·컨퍼런스' },
-  { id:'lobby',   ico:'🚪', nm:'로비·복도',   val:'0.5',  rate:0.5,  basis:'설계권장·체적기준',  note:'공용공간' },
-  { id:'storage', ico:'📦', nm:'창고·기계실', val:'0.3',  rate:0.3,  basis:'설계권장·체적기준',  note:'비작업공간' },
-  { id:'custom',  ico:'⚙️', nm:'직접입력',    val:'—',    rate:null, basis:'사용자 지정',      note:'환기횟수 직접 입력' },
+  { id:'apt', ico:'🏠', nm:'공동주택', val:'0.5', rate:0.5, basis:'설비규칙 제11조① (법정 최소)', note:'30세대 이상 신축공동주택등', pq:null, pqBasis:'' },
+  { id:'office', ico:'🏢', nm:'사무실', val:'1.0', rate:1.0, basis:'설계권장·체적기준', note:'일반사무, 업무용', pq:29, pqBasis:'설비규칙 별표 1의6 아목(업무시설)' },
+  { id:'store', ico:'🛒', nm:'판매시설', val:'1.5', rate:1.5, basis:'설계권장·체적기준', note:'백화점·쇼핑몰', pq:29, pqBasis:'설비규칙 별표 1의6 다목(판매시설)' },
+  { id:'rest', ico:'🍽️', nm:'식당·음식점', val:'2.0', rate:2.0, basis:'설계권장·체적기준', note:'일반음식점', pq:25, pqBasis:'기술기준 별표3 2.1.2(2) 일반 건축물' },
+  { id:'hotel', ico:'🏨', nm:'숙박·호텔', val:'1.5', rate:1.5, basis:'설계권장·체적기준', note:'호텔·모텔·여관', pq:25, pqBasis:'기술기준 별표3 2.1.2(2) 일반 건축물' },
+  { id:'hospital', ico:'🏥', nm:'병원·의료', val:'2.0', rate:2.0, basis:'설계권장·체적기준', note:'병원·의원·한의원', pq:36, pqBasis:'설비규칙 별표 1의6 마목(의료시설)' },
+  { id:'school', ico:'🏫', nm:'학교·교육', val:'1.5', rate:1.5, basis:'설계권장·체적기준', note:'학교·학원', pq:36, pqBasis:'설비규칙 별표 1의6 바목(교육연구시설)' },
+  { id:'lib', ico:'📚', nm:'도서관', val:'1.0', rate:1.0, basis:'설계권장·체적기준', note:'공공도서관', pq:36, pqBasis:'설비규칙 별표 1의6 바목(교육연구시설)' },
+  { id:'theater', ico:'🎬', nm:'공연·영화관', val:'2.5', rate:2.5, basis:'설계권장·체적기준', note:'극장·영화관', pq:29, pqBasis:'설비규칙 별표 1의6 나목(문화 및 집회시설)' },
+  { id:'sport', ico:'🏋️', nm:'체육·스포츠', val:'3.0', rate:3.0, basis:'설계권장·체적기준', note:'체육관·헬스장', pq:29, pqBasis:'설비규칙 별표 1의6 나목(문화 및 집회시설)' },
+  { id:'park', ico:'🅿️', nm:'주차장', val:'5.0', rate:5.0, basis:'설계권장·체적기준', note:'지하주차장 등', aq:27, pqBasis:'설비규칙 별표 1의6 자목(자동차 관련 시설)' },
+  { id:'wc', ico:'🚻', nm:'화장실', val:'10.0', rate:10.0, basis:'설계권장·체적기준', note:'공중·업무용화장실', pq:null, pqBasis:'' },
+  { id:'kitchen', ico:'🍳', nm:'주방·조리실', val:'20.0', rate:20.0, basis:'설계권장·체적기준', note:'업소용 주방', pq:null, pqBasis:'' },
+  { id:'lab', ico:'🔬', nm:'실험실', val:'6.0', rate:6.0, basis:'설계권장·체적기준', note:'연구·실험공간', pq:36, pqBasis:'설비규칙 별표 1의6 바목(교육연구시설)' },
+  { id:'meet', ico:'📊', nm:'회의실', val:'1.5', rate:1.5, basis:'설계권장·체적기준', note:'세미나·컨퍼런스', pq:29, pqBasis:'설비규칙 별표 1의6 아목(업무시설)' },
+  { id:'lobby', ico:'🚪', nm:'로비·복도', val:'0.5', rate:0.5, basis:'설계권장·체적기준', note:'공용공간', pq:null, pqBasis:'' },
+  { id:'storage', ico:'📦', nm:'창고·기계실', val:'0.3', rate:0.3, basis:'설계권장·체적기준', note:'비작업공간', pq:null, pqBasis:'' },
+  { id:'custom',  ico:'⚙️', nm:'직접입력',    val:'—',    rate:null, basis:'사용자 지정',      note:'환기횟수 직접 입력', pq:25, pqBasis:'기술기준 별표3 2.1.2(2) 일반 건축물' },
 ];
 
 // 선택된 용도
@@ -1334,24 +1336,31 @@ function doCalc() {
     else { showToast('⚠️ 체적 또는 면적·층고를 입력하세요'); return; }
   }
   
-  const oaRatio = parseFloat(document.getElementById('oaRatio').value) || 100;
-  const marginPct = parseFloat(document.getElementById('margin').value) || 10;
+  const _num = (id, d) => { const v = parseFloat(document.getElementById(id).value); return isNaN(v) ? d : v; };
+  const oaRatio = _num('oaRatio', 100);
+  const marginPct = _num('margin', 10);
   const persons = parseInt(document.getElementById('persons').value) || 0;
   const ventType = document.getElementById('ventType').value;
   
-  const Q_law = vol * n;
-  const Q_design = Q_law * (1 + marginPct / 100);
-  const Q_oa = Q_design * (oaRatio / 100);
-  const Q_person = persons > 0 ? persons * 36 : 0;
-  const Q_final = Math.max(Q_law, Q_person);
+  const bt = selectedBtype;
+  const _r6 = x => Math.round(x * 1e6) / 1e6;              // 부동소수 오차 제거 후 올림(3190.0000000000005 → 3190)
+  const Q_law = _r6(vol * n);                              // 체적 기준 Q = V × N
+  // 법정 필요환기량 — 설비규칙 별표 1의6 · 기술기준 별표3 2.1.2(2)
+  let Q_person = 0, reqTxt = '', reqBasis = '';
+  if (bt.aq && area > 0) { Q_person = _r6(area * bt.aq); reqTxt = `${area}㎡ × ${bt.aq} m³/㎡·h`; reqBasis = bt.pqBasis; }
+  else if (bt.pq && persons > 0) { Q_person = _r6(persons * bt.pq); reqTxt = `${persons}명 × ${bt.pq} m³/인·h`; reqBasis = bt.pqBasis; }
+  const Q_base = Math.max(Q_law, Q_person);                // 기준 환기량 Max(체적·법정 필요환기량)
+  const Q_design = _r6(Q_base * (1 + marginPct / 100));         // 설계 환기량 (여유율)
+  const Q_oa = _r6(Q_design * (oaRatio / 100));
+  const Q_final = Q_design;
   
-  calcResult = { n, vol, area, h, Q_law, Q_design, Q_oa, Q_person, Q_final, persons, oaRatio, marginPct, ventType, btype: selectedBtype };
+  calcResult = { n, vol, area, h, Q_law, Q_person, Q_base, Q_design, Q_oa, Q_final, reqTxt, reqBasis, persons, oaRatio, marginPct, ventType, btype: selectedBtype };
   
   // UI 업데이트
   const rp = document.getElementById('resultPanel');
   rp.classList.add('visible');
   document.getElementById('initGuide').style.display = 'none';
-  document.getElementById('heroVal').textContent = Math.ceil(Q_final).toLocaleString();
+  document.getElementById('heroVal').textContent = Math.ceil(Q_base).toLocaleString();
   document.getElementById('r_vol').textContent = vol.toFixed(1);
   document.getElementById('r_n').textContent = n;
   document.getElementById('r_design').textContent = Math.ceil(Q_design).toLocaleString();
@@ -1361,13 +1370,13 @@ function doCalc() {
   document.getElementById('heroBadge').textContent = `💨 ${selectedBtype.nm} · ${n}회/h`;
   
   // 인원 기준 검토
-  if (persons > 0) {
+  if (Q_person > 0) {
     document.getElementById('personCheck').style.display = 'block';
-    const bigger = Q_person > Q_law ? '인원 기준이 더 큽니다 → 설계 기준 적용' : '체적 기준이 더 큽니다 → 체적 기준 적용';
+    const bigger = Q_person > Q_law ? '법정 필요환기량이 더 큽니다 → 기준 환기량에 적용' : '체적 기준이 더 큽니다 → 기준 환기량에 적용';
     document.getElementById('personCheckTxt').innerHTML = `
       체적 기준: <b>${Math.ceil(Q_law).toLocaleString()} m³/h</b> (${n}회/h × ${vol.toFixed(0)}m³)<br>
-      인원 기준: <b>${Math.ceil(Q_person).toLocaleString()} m³/h</b> (${persons}명 × 36 m³/h·인)<br>
-      → <b>${bigger}</b> · 최종 설계 환기량: <b>${Math.ceil(Q_final).toLocaleString()} m³/h</b>
+      법정 필요환기량: <b>${Math.ceil(Q_person).toLocaleString()} m³/h</b> (${reqTxt} · ${reqBasis})<br>
+      → <b>${bigger}</b> · 설계 환기량(여유율 ${marginPct}%): <b>${Math.ceil(Q_design).toLocaleString()} m³/h</b>
     `;
   } else {
     document.getElementById('personCheck').style.display = 'none';
@@ -1378,7 +1387,7 @@ function doCalc() {
   document.getElementById('formulaNote').innerHTML = `
     용도: ${selectedBtype.ico} ${selectedBtype.nm} · 기준 환기횟수: ${n} 회/h<br>
     체적: ${vol.toFixed(1)} m³ (${area}m² × ${h}m)<br>
-    설계 환기량: ${Math.ceil(Q_law).toLocaleString()} × (1 + ${marginPct}%) = <b>${Math.ceil(Q_design).toLocaleString()} m³/h</b>
+    설계 환기량: ${Math.ceil(Q_base).toLocaleString()} × (1 + ${marginPct}%) = <b>${Math.ceil(Q_design).toLocaleString()} m³/h</b>
   `;
   
   // 결과 테이블
@@ -1388,14 +1397,15 @@ function doCalc() {
     <tr><td>바닥면적</td><td>${area.toFixed(1)}</td><td>m²</td><td>입력값</td></tr>
     <tr><td>층고 (평균천장고)</td><td>${h.toFixed(1)}</td><td>m</td><td>입력값</td></tr>
     <tr><td>환기 체적 V</td><td>${vol.toFixed(2)}</td><td>m³</td><td>A×h 또는 직접입력</td></tr>
-    <tr><td>기준 환기횟수 N</td><td>${n}</td><td>회/h</td><td>별표3 기준</td></tr>
-    <tr class="hl"><td><b>법정 최소 환기량</b></td><td><b>${Math.ceil(Q_law).toLocaleString()}</b></td><td>m³/h</td><td>Q = V × N</td></tr>
-    ${persons > 0 ? `<tr><td>인원 기준 환기량</td><td>${Math.ceil(Q_person).toLocaleString()}</td><td>m³/h</td><td>${persons}명 × 36 m³/h</td></tr>` : ''}
+    <tr><td>기준 환기횟수 N</td><td>${n}</td><td>회/h</td><td>${selectedBtype.basis}</td></tr>
+    <tr><td>체적 기준 환기량</td><td>${Math.ceil(Q_law).toLocaleString()}</td><td>m³/h</td><td>Q = V × N</td></tr>
+    ${Q_person > 0 ? `<tr><td>법정 필요환기량</td><td>${Math.ceil(Q_person).toLocaleString()}</td><td>m³/h</td><td>${reqTxt}</td></tr>` : ''}
+    <tr class="hl"><td><b>기준 환기량</b></td><td><b>${Math.ceil(Q_base).toLocaleString()}</b></td><td>m³/h</td><td>Max(체적·법정 필요환기량)</td></tr>
     <tr><td>여유율</td><td>${marginPct}</td><td>%</td><td>실제 설계 반영</td></tr>
     <tr><td>외기 도입 비율</td><td>${oaRatio}</td><td>%</td><td>OA Ratio</td></tr>
-    <tr class="hl"><td><b>설계 환기량</b></td><td><b>${Math.ceil(Q_design).toLocaleString()}</b></td><td>m³/h</td><td>법정값 × (1+여유율)</td></tr>
+    <tr class="hl"><td><b>설계 환기량</b></td><td><b>${Math.ceil(Q_design).toLocaleString()}</b></td><td>m³/h</td><td>기준 환기량 × (1+여유율)</td></tr>
     <tr><td>외기 도입량</td><td>${Math.ceil(Q_oa).toLocaleString()}</td><td>m³/h</td><td>설계량 × OA비율</td></tr>
-    <tr class="total"><td><b>최종 설계 환기량 (권장)</b></td><td><b>${Math.ceil(Q_final).toLocaleString()}</b></td><td>m³/h</td><td>체적·인원 중 큰 값</td></tr>
+    <tr class="total"><td><b>최종 설계 환기량</b></td><td><b>${Math.ceil(Q_final).toLocaleString()}</b></td><td>m³/h</td><td>Max(체적·법정) × (1+여유율)</td></tr>
   `;
   
   // 덕트 링크 업데이트
@@ -1406,7 +1416,7 @@ function doCalc() {
   // A4 업데이트
   updateA4();
   
-  showToast(`✅ 법정 환기량: ${Math.ceil(Q_law).toLocaleString()} m³/h 산정 완료`);
+  showToast(`✅ 설계 환기량: ${Math.ceil(Q_design).toLocaleString()} m³/h 산정 완료`);
 }
 
 // ── A4 업데이트 ──
@@ -1424,9 +1434,9 @@ function updateA4() {
     </div>
 
     <div class="a4-hero-grid">
-      <div class="a4-hbox blue"><div class="a4-hbox-lbl">법정 최소 환기량</div><div class="a4-hbox-val">${Math.ceil(r.Q_law).toLocaleString()}</div><div class="a4-hbox-unit">m³/h</div></div>
+      <div class="a4-hbox blue"><div class="a4-hbox-lbl">기준 환기량</div><div class="a4-hbox-val">${Math.ceil(r.Q_base).toLocaleString()}</div><div class="a4-hbox-unit">m³/h</div></div>
       <div class="a4-hbox teal"><div class="a4-hbox-lbl">설계 환기량</div><div class="a4-hbox-val">${Math.ceil(r.Q_design).toLocaleString()}</div><div class="a4-hbox-unit">m³/h (여유율 ${r.marginPct}%)</div></div>
-      <div class="a4-hbox orange"><div class="a4-hbox-lbl">환기횟수 N</div><div class="a4-hbox-val">${r.n}</div><div class="a4-hbox-unit">회/h (별표3)</div></div>
+      <div class="a4-hbox orange"><div class="a4-hbox-lbl">환기횟수 N</div><div class="a4-hbox-val">${r.n}</div><div class="a4-hbox-unit">회/h</div></div>
       <div class="a4-hbox green"><div class="a4-hbox-lbl">환기 체적 V</div><div class="a4-hbox-val">${r.vol.toFixed(0)}</div><div class="a4-hbox-unit">m³</div></div>
     </div>
 
@@ -1443,13 +1453,14 @@ function updateA4() {
     <table class="a4-tbl">
       <thead><tr><th>구분</th><th>산출식</th><th>수치</th><th>단위</th><th>비고</th></tr></thead>
       <tbody>
-        <tr><td>기준 환기횟수</td><td>N (별표3)</td><td><b>${r.n}</b></td><td>회/h</td><td>${r.btype.basis}</td></tr>
+        <tr><td>기준 환기횟수</td><td>N</td><td><b>${r.n}</b></td><td>회/h</td><td>${r.btype.basis}</td></tr>
         <tr><td>환기 체적</td><td>V = A × h</td><td>${r.vol.toFixed(2)}</td><td>m³</td><td>${r.area}㎡ × ${r.h}m</td></tr>
-        <tr class="hl a4-th"><td><b>법정 최소 환기량</b></td><td><b>Q = V × N</b></td><td><b>${Math.ceil(r.Q_law).toLocaleString()}</b></td><td>m³/h</td><td>법정 기준값</td></tr>
-        ${r.persons > 0 ? `<tr><td>인원 기준 환기량</td><td>${r.persons}명 × 36 m³/h</td><td>${Math.ceil(r.Q_person).toLocaleString()}</td><td>m³/h</td><td>ASHRAE 기준</td></tr>` : ''}
-        <tr><td>설계 환기량</td><td>Q × (1 + ${r.marginPct}%)</td><td>${Math.ceil(r.Q_design).toLocaleString()}</td><td>m³/h</td><td>여유율 반영</td></tr>
+        <tr><td>체적 기준 환기량</td><td>Q = V × N</td><td>${Math.ceil(r.Q_law).toLocaleString()}</td><td>m³/h</td><td>${r.btype.basis}</td></tr>
+        ${r.Q_person > 0 ? `<tr><td>법정 필요환기량</td><td>${r.reqTxt}</td><td>${Math.ceil(r.Q_person).toLocaleString()}</td><td>m³/h</td><td>${r.reqBasis}</td></tr>` : ''}
+        <tr class="hl a4-th"><td><b>기준 환기량</b></td><td><b>Max(체적·법정)</b></td><td><b>${Math.ceil(r.Q_base).toLocaleString()}</b></td><td>m³/h</td><td>큰 값 적용</td></tr>
+        <tr><td>설계 환기량</td><td>Q_base × (1 + ${r.marginPct}%)</td><td>${Math.ceil(r.Q_design).toLocaleString()}</td><td>m³/h</td><td>여유율 반영</td></tr>
         <tr><td>외기 도입량</td><td>Q_design × ${r.oaRatio}%</td><td>${Math.ceil(r.Q_oa).toLocaleString()}</td><td>m³/h</td><td>OA 도입량</td></tr>
-        <tr class="hl" style="background:#164e63!important;"><td style="color:#fde047;font-weight:900;">최종 설계 환기량</td><td style="color:#fde047;">Max(체적·인원기준)</td><td style="color:#fde047;font-weight:900;">${Math.ceil(r.Q_final).toLocaleString()}</td><td style="color:#fde047;">m³/h</td><td style="color:#a5f3fc;">권장 설계값</td></tr>
+        <tr class="hl" style="background:#164e63!important;"><td style="color:#fde047;font-weight:900;">최종 설계 환기량</td><td style="color:#fde047;">Max(체적·법정) × (1+여유율)</td><td style="color:#fde047;font-weight:900;">${Math.ceil(r.Q_final).toLocaleString()}</td><td style="color:#fde047;">m³/h</td><td style="color:#a5f3fc;">권장 설계값</td></tr>
       </tbody>
     </table>
 
@@ -1464,7 +1475,7 @@ function updateA4() {
     </table>
 
     <div class="a4-footer">
-      <span>■ 건축물의 설비기준 규칙 제11조 · 기계설비 기술기준 별표3 (국토교통부 고시 제2021-851호)</span>
+      <span>■ 건축물의 설비기준 등에 관한 규칙 제11조·별표 1의6 · 기계설비 기술기준 별표3 (국토교통부 고시 제2021-851호(제2026-360호 타법개정, 2026.7.8. 시행))</span>
       <span>MANMIN-Ver5.0 · ${projDate}</span>
     </div>
   `;
@@ -1518,7 +1529,7 @@ function resetAll() {
   document.getElementById('judgeTag').className = 'cbadge';
   document.getElementById('heroBadge').textContent = '💨 산정 대기';
   document.getElementById('resultTbody').innerHTML = '<tr><td colspan="4" style="color:#94a3b8;font-size:10px;">산정 결과가 여기에 표시됩니다</td></tr>';
-  document.getElementById('formulaEq').innerHTML = 'Q = V × N<br>Q: 법정 환기량 [m³/h], V: 체적 [m³], N: 환기횟수 [회/h]';
+  document.getElementById('formulaEq').innerHTML = 'Q = V × N<br>Q: 체적 기준 환기량 [m³/h], V: 체적 [m³], N: 환기횟수 [회/h]';
   document.getElementById('formulaNote').textContent = '건물 용도와 면적을 입력하여 산정하세요.';
   document.getElementById('personCheck').style.display = 'none';
   document.getElementById('initGuide').style.display = 'block';
@@ -1601,8 +1612,8 @@ function calcMulti() {
     const vol = parseFloat(document.getElementById('mv_' + rid)?.value) ||
                 (parseFloat(document.getElementById('ma_' + rid)?.value)||0) * (parseFloat(document.getElementById('mh_' + rid)?.value)||0);
     if (!vol || vol <= 0) { document.getElementById('mq_' + rid).textContent = '—'; return; }
-    const Q = vol * bt.rate;
-    const D = Q * 1.1;
+    const Q = Math.round(vol * bt.rate * 1e6) / 1e6;
+    const D = Math.round(Q * 1.1 * 1e6) / 1e6;
     document.getElementById('mn2_' + rid).textContent = bt.rate;
     document.getElementById('mq_' + rid).textContent = Math.ceil(Q).toLocaleString();
     document.getElementById('md_' + rid).textContent = Math.ceil(D).toLocaleString();
@@ -1616,7 +1627,7 @@ function calcMulti() {
     document.getElementById('multiResult').style.display = 'block';
     document.getElementById('multiSummaryBoxes').innerHTML = `
       <div class="result-hero rh-blue" style="margin-bottom:0;padding:13px;">
-        <div class="rh-sub" style="font-size:9px;">법정 환기량 합계</div>
+        <div class="rh-sub" style="font-size:9px;">체적 기준 환기량 합계</div>
         <div class="rh-val" style="font-size:22px;">${Math.ceil(totalQ).toLocaleString()}</div>
         <div class="rh-unit" style="font-size:10px;">m³/h</div>
       </div>
@@ -1638,7 +1649,7 @@ function calcMulti() {
 }
 
 function exportMultiCsv() {
-  const rows = [['No.','구역명','용도','면적(m²)','층고(m)','체적(m³)','환기횟수(회/h)','법정환기량(m³/h)','설계환기량(m³/h)']];
+  const rows = [['No.','구역명','용도','면적(m²)','층고(m)','체적(m³)','환기횟수(회/h)','체적기준환기량(m³/h)','설계환기량(m³/h)']];
   document.querySelectorAll('#multiTbody tr').forEach(tr => {
     const rid = tr.id.replace('mr_','');
     const nm = document.getElementById('mn_' + rid)?.value || '';
