@@ -37,7 +37,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE  = 'hwangi-v5.0.10';  /* 2026-10-13 근거·계산 정정 */
+const CACHE  = 'hwangi-v5.0.11';  /* 2026-10-13 매뉴얼 버튼 */
 
 const ASSETS = [
   './',

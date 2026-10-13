@@ -117,6 +117,8 @@ input[type="number"]{-moz-appearance:textfield;}
 .tb:hover{color:#fff;background:rgba(255,255,255,.09);}
 /* v5.0-HDR (2026-09-02 확정) — 활성 탭 단색 배경 + 강조색 바 */
 .tb.active{color:#fff;background:#7c3aed;border-bottom-color:#ddd6fe;}
+.tb.tb-manual{margin-left:auto;text-decoration:none;white-space:nowrap;}   /* v5.0.11 — 사용자 매뉴얼(탭 막대 오른쪽 끝) */
+@media(max-width:700px){.tab-bar{overflow-x:visible;}.tab-bar-inner{flex-wrap:wrap;}}   /* v5.0.11 — 좁은 화면에서 탭 두 줄(매뉴얼까지 보이게) */
 /* v5.0-HDR — 요약 스트립 (마스터 3층) */
 .sum-bar-wrap{background:#0f172a;padding:10px 0;}
 .sum-bar{max-width:1300px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;gap:14px;}
@@ -683,6 +685,7 @@ body.pwa-banner-visible .fab-wrap{bottom:82px;}
     <button class="tb" onclick="showTab('multi','this')" data-tab="multi"><span class="tb-ico">📋</span> <span>다중 구역 산정</span></button>
     <button class="tb" onclick="showTab('guide','this')" data-tab="guide"><span class="tb-ico">📐</span> <span>설계 기준표</span></button>
     <button class="tb" onclick="showTab('a4','this')" data-tab="a4"><span class="tb-ico">📄</span> <span>A4 미리보기</span></button>
+    <a class="tb tb-manual" href="https://manminkim-eng.github.io/ventilation-equipment/manual/" target="_blank" rel="noopener" title="사용자 매뉴얼 (새 창)" onclick="if(navigator.onLine===false){event.preventDefault();showToast('매뉴얼은 인터넷 연결 시 열립니다');}">📘 매뉴얼</a>
   </div>
 </nav>
 </div><!-- /.hdr-shell -->
@@ -1462,7 +1465,7 @@ function updateA4() {
         <tr class="hl a4-th"><td><b>기준 환기량</b></td><td><b>Max(체적·법정)</b></td><td><b>${Math.ceil(r.Q_base).toLocaleString()}</b></td><td>m³/h</td><td>큰 값 적용</td></tr>
         <tr><td>설계 환기량</td><td>Q_base × (1 + ${r.marginPct}%)</td><td>${Math.ceil(r.Q_design).toLocaleString()}</td><td>m³/h</td><td>여유율 반영</td></tr>
         <tr><td>외기 도입량</td><td>Q_design × ${r.oaRatio}%</td><td>${Math.ceil(r.Q_oa).toLocaleString()}</td><td>m³/h</td><td>OA 도입량</td></tr>
-        <tr class="hl" style="background:#164e63!important;"><td style="color:#fde047;font-weight:900;">최종 설계 환기량</td><td style="color:#fde047;">Max(체적·법정) × (1+여유율)</td><td style="color:#fde047;font-weight:900;">${Math.ceil(r.Q_final).toLocaleString()}</td><td style="color:#fde047;">m³/h</td><td style="color:#a5f3fc;">권장 설계값</td></tr>
+        <tr class="hl a4-final"><td style="background:#164e63!important;color:#fde047;font-weight:900;">최종 설계 환기량</td><td style="background:#164e63!important;color:#fde047;">Max(체적·법정) × (1+여유율)</td><td style="background:#164e63!important;color:#fde047;font-weight:900;">${Math.ceil(r.Q_final).toLocaleString()}</td><td style="background:#164e63!important;color:#fde047;">m³/h</td><td style="background:#164e63!important;color:#a5f3fc;">권장 설계값</td></tr>
       </tbody>
     </table>
 
