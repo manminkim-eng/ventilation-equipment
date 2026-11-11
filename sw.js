@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════
+   v6.1.1 (2026-11-12) — 건물개요 공통 원본 MM-PROJECT v1.2 새로 넣음(사업명 · 작성자 · 정밀검토 B6 · 작업지시서 §25-6-77) · 판 6.1 · 캐시명 v6.1.1 (종전 hwangi-v6.1.0)
    v6.1.0 2026-11-11 — KDS 코드 31 25 00 → 31 25 20 정정 · 별표 1의6 바목 근거 문구(학교 · 실험실은 준용값) · 법정 기준 표 규모 요건 · 근거 메모 · 판 6.1 · 캐시명 v6.1.0
    S6 회차 2026-09-05 — R24①② 표 선 separate·mono 한글 폴백 소급 동반 캐시명 v5.0.9
    S5 회차 2026-09-04 — R23② JPG 엔진 행 나눔 소급 동반 캐시명 v5.0.8
@@ -38,7 +39,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE  = 'hwangi-v6.1.0';  /* 2026-11-11 v6.1.0 근거 정정 · 근거 메모 · 판 6.1 (종전 v5.0.18) */
+const CACHE  = 'hwangi-v6.1.1';  /* 2026-11-11 v6.1.0 근거 정정 · 근거 메모 · 판 6.1 (종전 v5.0.18) */
 
 const ASSETS = [
   './',
