@@ -1,10 +1,11 @@
 /* ═══════════════════════════════════════════════════
+   v6.1.0 2026-11-11 — KDS 코드 31 25 00 → 31 25 20 정정 · 별표 1의6 바목 근거 문구(학교 · 실험실은 준용값) · 법정 기준 표 규모 요건 · 근거 메모 · 판 6.1 · 캐시명 v6.1.0
    S6 회차 2026-09-05 — R24①② 표 선 separate·mono 한글 폴백 소급 동반 캐시명 v5.0.9
    S5 회차 2026-09-04 — R23② JPG 엔진 행 나눔 소급 동반 캐시명 v5.0.8
    S3-0 회차 2026-09-04 — R27 html2canvas 클론 정화 동반 캐시명 v5.0.7
    S2 회차 2026-09-04 — index 소급(R1·R21·R26 등) 동반 캐시명 v5.0.6
    R25 회차 2026-09-04 — 자기 접두어 캐시 조회 · cors 프리캐시 · opaque 가드 · 캐시명 v5.0.5 (S10)
-   환기설비 — 기계환기설비 환기량 산정 시스템  MANMIN Ver-5.0
+   환기설비 — 기계환기설비 환기량 산정 시스템  MANMIN Ver-6.1
    Service Worker — 오프라인 캐시 + 버전 업데이트
    ENGINEER KIM MANMIN
 
@@ -37,7 +38,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE  = 'hwangi-v5.0.18';  /* 2026-10-13 매뉴얼 버튼 */
+const CACHE  = 'hwangi-v6.1.0';  /* 2026-11-11 v6.1.0 근거 정정 · 근거 메모 · 판 6.1 (종전 v5.0.18) */
 
 const ASSETS = [
   './',
