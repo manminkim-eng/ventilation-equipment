@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════
+   v6.1.8 (2026-11-12) — html2canvas 1.4.1 머리 태그 SRI(integrity sha384 · crossorigin) · 공통 인쇄 원본 MM-PRINT v1.0 → v1.1(지연 로더도 SRI)(정밀검토 B8 · html2canvas SRI) — 화면 · 계산 · 인쇄 불변 · 작업지시서 §25-6-87 · 캐시명 v6.1.8 (종전 v6.1.7)
    v6.1.7 (2026-11-12) — 다중 구역 표에 KDS 31 25 20 : 2026 4.4(3) 최소 외기량 열 · 「KDS 4.4(3) 권장 적용」 칸(체크 안 하면 종전과 같은 결과) · CSV 열(정밀검토 KDS 4.4(3) 다중 구역) · 작업지시서 §25-6-84 · 캐시명 v6.1.7 (종전 v6.1.6)
    v6.1.6 (2026-11-12) — KDS 31 25 20 : 2026 4.4(3) 호흡선 최소 외기량 비교(표 4.4-2 Rp · Ra · 기본 밀도) · 「권장 적용」 선택 칸(체크 안 하면 종전과 같은 결과) · 결과 · A4 줄(정밀검토 KDS 남은 2건) · 작업지시서 §25-6-83 · 캐시명 v6.1.6 (종전 v6.1.5)
    v6.1.5 (2026-11-12) — Pretendard CSS SRI(integrity · crossorigin)(정밀검토 C2) — 화면 · 계산 · 인쇄 불변 · 작업지시서 §25-6-82 · 캐시명 v6.1.5 (종전 v6.1.4)
@@ -45,7 +46,7 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE  = 'hwangi-v6.1.7';  /* 2026-11-11 v6.1.0 근거 정정 · 근거 메모 · 판 6.1 (종전 v5.0.18) */
+const CACHE  = 'hwangi-v6.1.8';  /* 2026-11-11 v6.1.0 근거 정정 · 근거 메모 · 판 6.1 (종전 v5.0.18) */
 
 const ASSETS = [
   './',
