@@ -921,16 +921,17 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
 <div class="tab-panel" id="tab-multi">
   <div class="nb blue" style="margin-bottom:12px;">
     <div class="nb-tit">📋 다중 구역 일괄 환기량 산정</div>
-    <div class="nb-txt">여러 공간(구역)의 환기량을 한 번에 산정합니다. 각 구역의 용도·면적·층고·재실인원을 입력하면 체적 기준(V × N)과 법정 필요환기량(설비규칙 별표 1의6 · 기술기준 별표3 2.1.2) 중 큰 값을 기준 환기량으로, 여기에 여유율을 더해 설계 환기량을 산정하고 전체 합계를 도출합니다.</div>
+    <div class="nb-txt">여러 공간(구역)의 환기량을 한 번에 산정합니다. 각 구역의 용도·면적·층고·재실인원을 입력하면 체적 기준(V × N)과 법정 필요환기량(설비규칙 별표 1의6 · 기술기준 별표3 2.1.2) 중 큰 값을 기준 환기량으로, 여기에 여유율을 더해 설계 환기량을 산정하고 전체 합계를 도출합니다. KDS 31 25 20 4.4(3) 호흡선 최소 외기량(표 4.4-2)은 늘 비교 열에 표시되고, 「KDS 4.4(3) 권장 적용」 체크 시 기준 환기량에 반영됩니다.</div>
   </div>
 
   <div class="card">
     <div class="card-head"><div class="card-ico">📋</div><div class="card-tit">다중 구역 환기량 산정표</div>
       <label style="margin-left:auto;display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;">여유율 <input class="finput" id="multiMargin" type="number" min="0" max="100" value="10" style="width:58px;padding:4px 6px;font-size:11px;text-align:right;">%</label>
+      <label for="multiKds" title="KDS 31 25 20 4.4(3) — 체크하면 구역별 호흡선 최소 외기량(표 4.4-2)을 기준 환기량 Max 에 넣음 · 안 하면 비교만 표시" style="display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer;"><input type="checkbox" id="multiKds" onchange="if(document.getElementById('multiResult').style.display==='block')calcMulti()"> KDS 4.4(3) 권장 적용</label>
       <button class="btn-g" onclick="addMultiRow()">＋ 구역 추가</button>
     </div>
     <div class="card-body" style="padding:0;overflow-x:auto;">
-      <table class="rtbl" id="multiTbl" style="min-width:760px;">
+      <table class="rtbl" id="multiTbl" style="min-width:840px;">
         <thead>
           <tr>
             <th style="width:36px;">No.</th>
@@ -941,6 +942,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
             <th>체적(m³)</th>
             <th>인원(명)</th>
             <th>환기횟수<br>(회/h)</th>
+            <th>KDS 최소<br>외기량(권장)</th>
             <th>기준환기량<br>Max(체적·법정)</th>
             <th>설계환기량<br>(여유율 반영)</th>
             <th style="width:44px;">삭제</th>
@@ -950,7 +952,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
         </tbody>
         <tfoot>
           <tr class="total">
-            <td colspan="8" style="text-align:right;font-size:11px;">전체 합계</td>
+            <td colspan="9" style="text-align:right;font-size:11px;">전체 합계</td>
             <td id="multiTotalQ">—</td>
             <td id="multiTotalD">—</td>
             <td></td>
@@ -1055,7 +1057,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
             <tr class="hl"><td>공동주택 · 기숙사</td><td>9.0</td><td>1.1</td><td>10</td></tr>
           </tbody>
         </table>
-        <div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.55">V(m³/h) = Rp × 재실 인원 + Ra × 바닥면적 — ANSI/ASHRAE 62.1-2019 표 6-1 값(KDS 31 25 20 : 2026 4.4(2)). 법정 필요 환기량(표 4.4-1 · 설비규칙 별표 1의6)이 이 값보다 작으면 이 값을 쓰도록 권장(4.4(3)) · 산정 결과에 비교가 표시되고, 입력 칸 「4.4(3) 권장 적용」 체크 시 기준 환기량에 반영됩니다.</div>
+        <div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.55">V(m³/h) = Rp × 재실 인원 + Ra × 바닥면적 — ANSI/ASHRAE 62.1-2019 표 6-1 값(KDS 31 25 20 : 2026 4.4(2)). 법정 필요 환기량(표 4.4-1 · 설비규칙 별표 1의6)이 이 값보다 작으면 이 값을 쓰도록 권장(4.4(3)) · 산정 결과에 비교가 표시되고, 입력 칸 「4.4(3) 권장 적용」 체크 시 기준 환기량에 반영됩니다(다중 구역 표도 같은 열 · 적용 칸).</div>
       </div>
     </div>
   </div>
@@ -1657,6 +1659,7 @@ function addMultiRow() {
     <td><input class="finput" type="number" style="font-size:11px;padding:5px 7px;text-align:right;" id="mv_${rid}" placeholder="자동계산"></td>
     <td><input class="finput" type="number" min="0" style="font-size:11px;padding:5px 7px;text-align:right;min-width:52px;" id="mp_${rid}" placeholder="선택"></td>
     <td style="text-align:center;font-size:11px;font-weight:800;" id="mn2_${rid}">—</td>
+    <td style="text-align:center;font-size:11px;font-weight:700;color:#64748b;" id="mk_${rid}">—</td>
     <td style="text-align:center;font-size:11px;font-weight:800;color:#4375b7;" id="mq_${rid}">—</td>
     <td style="text-align:center;font-size:11px;font-weight:800;color:#15803d;" id="md_${rid}">—</td>
     <td><button onclick="removeMultiRow(${rid})" style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:5px;padding:3px 7px;cursor:pointer;font-size:11px;">✕</button></td>
@@ -1688,6 +1691,8 @@ function calcMulti() {
   const _m = parseFloat(document.getElementById('multiMargin')?.value);
   const mPct = isNaN(_m) ? 10 : _m;
   const _r6 = x => Math.round(x * 1e6) / 1e6;
+  const kApply = !!(document.getElementById('multiKds') && document.getElementById('multiKds').checked);
+  let kOver = 0;
   document.querySelectorAll('#multiTbody tr').forEach(tr => {
     const rid = tr.id.replace('mr_','');
     const bt = BTYPE_DATA.find(b => b.id === document.getElementById('mt_' + rid)?.value);
@@ -1696,16 +1701,23 @@ function calcMulti() {
     const vol = parseFloat(document.getElementById('mv_' + rid)?.value) ||
                 area * (parseFloat(document.getElementById('mh_' + rid)?.value)||0);
     const pp = parseInt(document.getElementById('mp_' + rid)?.value) || 0;
-    if (!vol || vol <= 0) { document.getElementById('mq_' + rid).textContent = '—'; tr.dataset.q = ''; return; }
+    // v6.1.7 — KDS 31 25 20 : 2026 4.4(3) 표 4.4-2 최소 외기량(인원 없으면 기본 밀도 · 올림) — 표에 없는 용도는 '—'
+    const kq = KDS442[bt.id];
+    const Qk = (kq && area > 0) ? _r6(kq.rp * (pp > 0 ? pp : Math.ceil(area * kq.dn / 100)) + kq.ra * area) : 0;
+    const mkEl = document.getElementById('mk_' + rid);
+    if (!vol || vol <= 0) { document.getElementById('mq_' + rid).textContent = '—'; if (mkEl) mkEl.textContent = '—'; tr.dataset.q = ''; tr.dataset.qk = ''; return; }
     const Qv = _r6(vol * bt.rate);
     let Qr = 0;
     if (bt.aq && area > 0) Qr = _r6(area * bt.aq);
     else if (bt.pq && pp > 0) Qr = _r6(pp * bt.pq);
-    const Q = Math.max(Qv, Qr);
+    const kWin = Qk > Math.max(Qv, Qr);
+    if (kWin && !kApply) kOver++;
+    const Q = Math.max(Qv, Qr, kApply ? Qk : 0);
     const D = _r6(Q * (1 + mPct / 100));
-    Object.assign(tr.dataset, { qv: Math.ceil(Qv), qr: Qr > 0 ? Math.ceil(Qr) : '', q: Math.ceil(Q), d: Math.ceil(D) });
+    Object.assign(tr.dataset, { qv: Math.ceil(Qv), qr: Qr > 0 ? Math.ceil(Qr) : '', qk: Qk > 0 ? Math.ceil(Qk) : '', q: Math.ceil(Q), d: Math.ceil(D) });
+    if (mkEl) mkEl.innerHTML = Qk > 0 ? Math.ceil(Qk).toLocaleString() + (kWin ? (kApply ? '<br><small style="font-size:11px;color:#15803d;">적용</small>' : '<br><small style="font-size:11px;color:#b91c1c;">더 큼</small>') : '') : '—';
     document.getElementById('mn2_' + rid).textContent = bt.rate;
-    document.getElementById('mq_' + rid).innerHTML = Math.ceil(Q).toLocaleString() + (Qr > Qv ? '<br><small style="font-size:11px;color:#b45309;">법정</small>' : '');
+    document.getElementById('mq_' + rid).innerHTML = Math.ceil(Q).toLocaleString() + (kApply && kWin ? '<br><small style="font-size:11px;color:#15803d;">KDS</small>' : (Qr > Qv ? '<br><small style="font-size:11px;color:#b45309;">법정</small>' : ''));
     document.getElementById('md_' + rid).textContent = Math.ceil(D).toLocaleString();
     totalQ += Q; totalD += D;
     rowCount++;
@@ -1717,7 +1729,7 @@ function calcMulti() {
     document.getElementById('multiResult').style.display = 'block';
     document.getElementById('multiSummaryBoxes').innerHTML = `
       <div class="result-hero rh-blue" style="margin-bottom:0;padding:13px;">
-        <div class="rh-sub" style="font-size:11px;">기준 환기량 합계</div>
+        <div class="rh-sub" style="font-size:11px;">기준 환기량 합계${kApply ? ' (KDS 4.4(3) 적용)' : ''}</div>
         <div class="rh-val" style="font-size:22px;">${Math.ceil(totalQ).toLocaleString()}</div>
         <div class="rh-unit" style="font-size:11px;">m³/h</div>
       </div>
@@ -1733,13 +1745,15 @@ function calcMulti() {
       </div>
     `;
     document.getElementById('multiDuctNote').innerHTML =
-      `전체 설계 환기량 <b>${Math.ceil(totalD).toLocaleString()} m³/h</b>을 기준으로 메인 덕트 규격을 산정하고,<br>각 구역 분기 덕트는 해당 구역 환기량을 기준으로 덕트 계산기에서 산정하세요.`;
+      `전체 설계 환기량 <b>${Math.ceil(totalD).toLocaleString()} m³/h</b>을 기준으로 메인 덕트 규격을 산정하고,<br>각 구역 분기 덕트는 해당 구역 환기량을 기준으로 덕트 계산기에서 산정하세요.`
+      + (kOver > 0 ? `<br><span style="color:#b91c1c;">📏 KDS 31 25 20 4.4(3) — ${kOver}개 구역은 호흡선 최소 외기량이 체적 · 법정 기준보다 큽니다(표의 「더 큼」). 권장대로 쓰려면 위 「KDS 4.4(3) 권장 적용」을 체크하세요.</span>` : '')
+      + (kApply ? `<br><span style="color:#15803d;">📏 KDS 31 25 20 4.4(3) 권장 적용 — 구역별 최소 외기량(표 4.4-2, 인원 없으면 기본 밀도)을 기준 환기량 Max 에 넣었습니다.</span>` : '');
     showToast(`✅ ${rowCount}개 구역 산정 완료 · 합계: ${Math.ceil(totalQ).toLocaleString()} m³/h`);
   }
 }
 
 function exportMultiCsv() {
-  const rows = [['No.','구역명','용도','면적(m²)','층고(m)','체적(m³)','인원(명)','환기횟수(회/h)','체적기준(m³/h)','법정필요(m³/h)','기준환기량(m³/h)','설계환기량(m³/h)']];
+  const rows = [['No.','구역명','용도','면적(m²)','층고(m)','체적(m³)','인원(명)','환기횟수(회/h)','체적기준(m³/h)','법정필요(m³/h)','KDS최소외기량(m³/h)','기준환기량(m³/h)','설계환기량(m³/h)']];
   document.querySelectorAll('#multiTbody tr').forEach(tr => {
     const rid = tr.id.replace('mr_','');
     const nm = document.getElementById('mn_' + rid)?.value || '';
@@ -1750,7 +1764,7 @@ function exportMultiCsv() {
     const n = bt ? bt.rate : '';
     const pp = document.getElementById('mp_' + rid)?.value || '';
     const ds = tr.dataset;
-    rows.push([rid, nm, bt ? bt.nm : '', a, h, v, pp, n, ds.qv || '', ds.qr || '', ds.q || '', ds.d || '']);
+    rows.push([rid, nm, bt ? bt.nm : '', a, h, v, pp, n, ds.qv || '', ds.qr || '', ds.qk || '', ds.q || '', ds.d || '']);
   });
   const csv = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
   const a = document.createElement('a');
