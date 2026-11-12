@@ -818,6 +818,10 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
               </select>
             </div>
           </div>
+          <label for="kdsApply" style="display:flex;align-items:flex-start;gap:8px;margin-top:12px;padding:9px 11px;border:1px solid #dbe4ef;border-radius:8px;background:#f8fafc;font-size:12px;line-height:1.5;color:#374151;cursor:pointer;">
+            <input type="checkbox" id="kdsApply" style="margin-top:3px;flex:none;">
+            <span><b>KDS 31 25 20 4.4(3) 권장 — 호흡선 최소 외기량 적용</b><br><span style="color:#64748b;">V = Rp × 재실 인원 + Ra × 바닥면적(표 4.4-2) · 인원을 비우면 표의 기본 밀도 · 체크하면 기준 환기량 Max 에 넣고, 안 하면 비교만 표시</span></span>
+          </label>
         </div>
       </div>
 
@@ -862,6 +866,12 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
           <div id="personCheck" style="display:none;" class="nb org">
             <div class="nb-tit">👤 법정 필요환기량 검토</div>
             <div class="nb-txt" id="personCheckTxt"></div>
+          </div>
+
+          <!-- KDS 4.4(3) 호흡선 최소 외기량 비교 (v6.1.6) -->
+          <div id="kdsCheck" style="display:none;" class="nb org">
+            <div class="nb-tit">📏 KDS 31 25 20 4.4(3) 호흡선 최소 외기량 비교 (권장)</div>
+            <div class="nb-txt" id="kdsCheckTxt"></div>
           </div>
 
           <!-- 상세 산출 -->
@@ -1045,7 +1055,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
             <tr class="hl"><td>공동주택 · 기숙사</td><td>9.0</td><td>1.1</td><td>10</td></tr>
           </tbody>
         </table>
-        <div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.55">V(m³/h) = Rp × 재실 인원 + Ra × 바닥면적 — ANSI/ASHRAE 62.1-2019 표 6-1 값(KDS 31 25 20 : 2026 4.4(2)). 법정 필요 환기량(표 4.4-1 · 설비규칙 별표 1의6)이 이 값보다 작으면 이 값을 쓰도록 권장(4.4(3)) · 이 도구 계산에는 쓰지 않는 참고표입니다.</div>
+        <div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.55">V(m³/h) = Rp × 재실 인원 + Ra × 바닥면적 — ANSI/ASHRAE 62.1-2019 표 6-1 값(KDS 31 25 20 : 2026 4.4(2)). 법정 필요 환기량(표 4.4-1 · 설비규칙 별표 1의6)이 이 값보다 작으면 이 값을 쓰도록 권장(4.4(3)) · 산정 결과에 비교가 표시되고, 입력 칸 「4.4(3) 권장 적용」 체크 시 기준 환기량에 반영됩니다.</div>
       </div>
     </div>
   </div>
@@ -1262,6 +1272,20 @@ const BTYPE_DATA = [
   { id:'custom',  ico:'⚙️', nm:'직접입력',    val:'—',    rate:null, basis:'사용자 지정',      note:'환기횟수 직접 입력', pq:25, pqBasis:'기술기준 별표3 2.1.2(2) 일반 건축물' },
 ];
 
+// KDS 31 25 20 : 2026 표 4.4-2 호흡선 최소 외기량(ANSI/ASHRAE 62.1-2019 표 6-1) — Rp ㎥/인·h · Ra ㎥/㎡·h · dn 기본 밀도 인/100㎡
+// 표에 같은 용도가 있는 것만 대응(의료 · 식당 · 숙박 · 주차장 · 화장실 · 주방 · 실험실 · 창고 · 직접입력은 표에 없음 → 비교 생략)
+const KDS442 = {
+  apt:{ nm:'공동주택 · 기숙사', rp:9.0, ra:1.1, dn:10 },
+  office:{ nm:'업무시설(사무실)', rp:9.0, ra:1.1, dn:5 },
+  store:{ nm:'판매시설(일반판매)', rp:13.7, ra:2.2, dn:15 },
+  school:{ nm:'학교시설(교실 9세 이상)', rp:18.0, ra:2.2, dn:35 },
+  lib:{ nm:'교육연구시설(도서관)', rp:5.0, ra:2.5, dn:10 },
+  theater:{ nm:'문화 및 집회시설(강당)', rp:9.0, ra:1.1, dn:150 },
+  sport:{ nm:'문화 및 집회시설(체육관)', rp:36.0, ra:3.2, dn:7 },
+  meet:{ nm:'업무시설(응접실) 값 준용', rp:9.0, ra:1.1, dn:30 },
+  lobby:{ nm:'업무시설(로비)', rp:9.0, ra:1.1, dn:10 },
+};
+
 // 선택된 용도
 let selectedBtype = null;
 let calcResult = null;
@@ -1377,12 +1401,21 @@ function doCalc() {
   let Q_person = 0, reqTxt = '', reqBasis = '';
   if (bt.aq && area > 0) { Q_person = _r6(area * bt.aq); reqTxt = `${area}㎡ × ${bt.aq} m³/㎡·h`; reqBasis = bt.pqBasis; }
   else if (bt.pq && persons > 0) { Q_person = _r6(persons * bt.pq); reqTxt = `${persons}명 × ${bt.pq} m³/인·h`; reqBasis = bt.pqBasis; }
-  const Q_base = Math.max(Q_law, Q_person);                // 기준 환기량 Max(체적·법정 필요환기량)
+  // KDS 31 25 20 : 2026 4.4(3) — 표 4.4-1 필요 환기량이 표 4.4-2 최소 외기량보다 작으면 최소 외기량 선정 권장(v6.1.6)
+  const kq = KDS442[bt.id];
+  let Q_kds = 0, kdsTxt = '', kdsPz = 0, kdsDef = false;
+  if (kq && area > 0) {
+    kdsDef = !(persons > 0); kdsPz = kdsDef ? Math.ceil(area * kq.dn / 100) : persons;
+    Q_kds = _r6(kq.rp * kdsPz + kq.ra * area);
+    kdsTxt = `${kq.rp} × ${kdsPz}명${kdsDef ? `(기본 밀도 ${kq.dn}인/100㎡ · 올림)` : ''} + ${kq.ra} × ${area}㎡`;
+  }
+  const kdsApply = !!(document.getElementById('kdsApply') && document.getElementById('kdsApply').checked) && Q_kds > 0;
+  const Q_base = Math.max(Q_law, Q_person, kdsApply ? Q_kds : 0);   // 기준 환기량 Max(체적·법정 필요환기량 · 적용 시 KDS 최소 외기량)
   const Q_design = _r6(Q_base * (1 + marginPct / 100));         // 설계 환기량 (여유율)
   const Q_oa = _r6(Q_design * (oaRatio / 100));
   const Q_final = Q_design;
   
-  calcResult = { n, vol, area, h, Q_law, Q_person, Q_base, Q_design, Q_oa, Q_final, reqTxt, reqBasis, persons, oaRatio, marginPct, ventType, btype: selectedBtype };
+  calcResult = { n, vol, area, h, Q_law, Q_person, Q_base, Q_design, Q_oa, Q_final, reqTxt, reqBasis, persons, oaRatio, marginPct, ventType, btype: selectedBtype, Q_kds, kdsTxt, kdsApply, kdsNm: kq ? kq.nm : '' };
   
   // UI 업데이트
   const rp = document.getElementById('resultPanel');
@@ -1409,6 +1442,19 @@ function doCalc() {
   } else {
     document.getElementById('personCheck').style.display = 'none';
   }
+  // KDS 4.4(3) 비교
+  if (Q_kds > 0) {
+    const lawMax = Math.max(Q_law, Q_person);
+    const over = Q_kds > lawMax;
+    document.getElementById('kdsCheck').style.display = 'block';
+    document.getElementById('kdsCheckTxt').innerHTML = `
+      호흡선 최소 외기량(${kq.nm}): <b>${Math.ceil(Q_kds).toLocaleString()} m³/h</b> (${kdsTxt})<br>
+      체적 · 법정 기준 큰 값: <b>${Math.ceil(lawMax).toLocaleString()} m³/h</b><br>
+      → ${over ? (kdsApply ? '<b>KDS 최소 외기량이 더 큽니다 → 적용함(4.4(3) 권장)</b>' : '<b style="color:#b91c1c;">KDS 최소 외기량이 더 큽니다 — 4.4(3)은 이 값을 쓰도록 권장(위 「적용」 체크 시 반영)</b>') : '체적 · 법정 기준이 KDS 최소 외기량 이상입니다(권장 충족)'}
+    `;
+  } else {
+    document.getElementById('kdsCheck').style.display = 'none';
+  }
   
   // 산출식
   document.getElementById('formulaEq').innerHTML = `Q = V × N = ${vol.toFixed(1)} × ${n} = <b>${Math.ceil(Q_law).toLocaleString()} m³/h</b>`;
@@ -1428,7 +1474,8 @@ function doCalc() {
     <tr><td>기준 환기횟수 N</td><td>${n}</td><td>회/h</td><td>${selectedBtype.basis}</td></tr>
     <tr><td>체적 기준 환기량</td><td>${Math.ceil(Q_law).toLocaleString()}</td><td>m³/h</td><td>Q = V × N</td></tr>
     ${Q_person > 0 ? `<tr><td>법정 필요환기량</td><td>${Math.ceil(Q_person).toLocaleString()}</td><td>m³/h</td><td>${reqTxt}</td></tr>` : ''}
-    <tr class="hl"><td><b>기준 환기량</b></td><td><b>${Math.ceil(Q_base).toLocaleString()}</b></td><td>m³/h</td><td>Max(체적·법정 필요환기량)</td></tr>
+    ${Q_kds > 0 ? `<tr><td>KDS 최소 외기량(권장)</td><td>${Math.ceil(Q_kds).toLocaleString()}</td><td>m³/h</td><td>${kdsTxt} · 표 4.4-2 ${kdsApply ? '· 적용' : '· 비교만'}</td></tr>` : ''}
+    <tr class="hl"><td><b>기준 환기량</b></td><td><b>${Math.ceil(Q_base).toLocaleString()}</b></td><td>m³/h</td><td>Max(체적·법정 필요환기량${kdsApply ? '·KDS 최소 외기량' : ''})</td></tr>
     <tr><td>여유율</td><td>${marginPct}</td><td>%</td><td>실제 설계 반영</td></tr>
     <tr><td>외기 도입 비율</td><td>${oaRatio}</td><td>%</td><td>OA Ratio</td></tr>
     <tr class="hl"><td><b>설계 환기량</b></td><td><b>${Math.ceil(Q_design).toLocaleString()}</b></td><td>m³/h</td><td>기준 환기량 × (1+여유율)</td></tr>
@@ -1485,7 +1532,8 @@ function updateA4() {
         <tr><td>환기 체적</td><td>V = A × h</td><td>${r.vol.toFixed(2)}</td><td>m³</td><td>${r.area}㎡ × ${r.h}m</td></tr>
         <tr><td>체적 기준 환기량</td><td>Q = V × N</td><td>${Math.ceil(r.Q_law).toLocaleString()}</td><td>m³/h</td><td>${r.btype.basis}</td></tr>
         ${r.Q_person > 0 ? `<tr><td>법정 필요환기량</td><td>${r.reqTxt}</td><td>${Math.ceil(r.Q_person).toLocaleString()}</td><td>m³/h</td><td>${r.reqBasis}</td></tr>` : ''}
-        <tr class="hl a4-th"><td><b>기준 환기량</b></td><td><b>Max(체적·법정)</b></td><td><b>${Math.ceil(r.Q_base).toLocaleString()}</b></td><td>m³/h</td><td>큰 값 적용</td></tr>
+        ${r.Q_kds > 0 ? `<tr><td>KDS 최소 외기량(권장)</td><td>${r.kdsTxt}</td><td>${Math.ceil(r.Q_kds).toLocaleString()}</td><td>m³/h</td><td>KDS 31 25 20 표 4.4-2 · 4.4(3) ${r.kdsApply ? '적용' : '비교만'}</td></tr>` : ''}
+        <tr class="hl a4-th"><td><b>기준 환기량</b></td><td><b>Max(체적·법정${r.kdsApply ? '·KDS' : ''})</b></td><td><b>${Math.ceil(r.Q_base).toLocaleString()}</b></td><td>m³/h</td><td>큰 값 적용</td></tr>
         <tr><td>설계 환기량</td><td>Q_base × (1 + ${r.marginPct}%)</td><td>${Math.ceil(r.Q_design).toLocaleString()}</td><td>m³/h</td><td>여유율 반영</td></tr>
         <tr><td>외기 도입량</td><td>Q_design × ${r.oaRatio}%</td><td>${Math.ceil(r.Q_oa).toLocaleString()}</td><td>m³/h</td><td>OA 도입량</td></tr>
         <tr class="hl a4-final"><td style="background:#164e63!important;color:#fde047;font-weight:900;">최종 설계 환기량</td><td style="background:#164e63!important;color:#fde047;">Max(체적·법정) × (1+여유율)</td><td style="background:#164e63!important;color:#fde047;font-weight:900;">${Math.ceil(r.Q_final).toLocaleString()}</td><td style="background:#164e63!important;color:#fde047;">m³/h</td><td style="background:#164e63!important;color:#a5f3fc;">권장 설계값</td></tr>
@@ -1546,6 +1594,8 @@ function resetAll() {
   document.getElementById('selRate').textContent = '—';
   document.getElementById('selBasis').textContent = '용도를 선택하세요';
   ['area','height','vol','persons'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('kdsApply').checked = false;
+  document.getElementById('kdsCheck').style.display = 'none';
   document.getElementById('oaRatio').value = '100';
   document.getElementById('margin').value = '10';
   // 결과 패널 숨김 및 내용 초기화
