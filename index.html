@@ -1031,19 +1031,21 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
       </div>
     </div>
     <div class="card">
-      <div class="card-head"><div class="card-ico">📏</div><div class="card-tit">1인당 외기량 참고 (ASHRAE 62.1 · 법정 기준 아님)</div></div>
+      <div class="card-head"><div class="card-ico">📏</div><div class="card-tit">호흡선 최소 외기량 참고 (KDS 31 25 20 : 2026 표 4.4-2 · 권장)</div></div>
       <div class="card-body">
         <table class="gtbl">
-          <thead><tr><th>용도</th><th>L/s·인</th><th>m³/h·인</th></tr></thead>
+          <thead><tr><th>용도</th><th>Rp m³/h·인</th><th>Ra m³/㎡·h</th><th>밀도 인/100㎡</th></tr></thead>
           <tbody>
-            <tr><td>사무실</td><td>10</td><td>36</td></tr>
-            <tr><td>교실</td><td>8.5</td><td>30.6</td></tr>
-            <tr><td>회의실</td><td>10</td><td>36</td></tr>
-            <tr><td>식당</td><td>10</td><td>36</td></tr>
-            <tr><td>상점</td><td>8.5</td><td>30.6</td></tr>
-            <tr class="hl"><td>주거</td><td>—</td><td>체적기준</td></tr>
+            <tr><td>사무실</td><td>9.0</td><td>1.1</td><td>5</td></tr>
+            <tr><td>응접실</td><td>9.0</td><td>1.1</td><td>30</td></tr>
+            <tr><td>교실(9세 이상)</td><td>18.0</td><td>2.2</td><td>35</td></tr>
+            <tr><td>일반판매</td><td>13.7</td><td>2.2</td><td>15</td></tr>
+            <tr><td>도서관</td><td>5.0</td><td>2.5</td><td>10</td></tr>
+            <tr><td>강당</td><td>9.0</td><td>1.1</td><td>150</td></tr>
+            <tr class="hl"><td>공동주택 · 기숙사</td><td>9.0</td><td>1.1</td><td>10</td></tr>
           </tbody>
         </table>
+        <div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.55">V(m³/h) = Rp × 재실 인원 + Ra × 바닥면적 — ANSI/ASHRAE 62.1-2019 표 6-1 값(KDS 31 25 20 : 2026 4.4(2)). 법정 필요 환기량(표 4.4-1 · 설비규칙 별표 1의6)이 이 값보다 작으면 이 값을 쓰도록 권장(4.4(3)) · 이 도구 계산에는 쓰지 않는 참고표입니다.</div>
       </div>
     </div>
   </div>
@@ -1166,7 +1168,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
           <tr class="hl"><td>실내주차장</td><td>연면적 2천㎡ 이상</td><td>27 ㎥/㎡·h 이상 (별표 1의6)</td></tr>
         </tbody>
       </table>
-      <div class="nb pur mm-law-memo" style="margin-top:10px"><div class="nb-tit">📝 근거 메모 (2026. 11. 11. 확인)</div><div class="nb-txt">① 환기설비 설계기준의 코드는 <strong>KDS 31 25 20</strong>입니다(기술기준 별표3 1.3(5)) — 종전 표기 「KDS 31 25 00」을 바로잡았습니다. KDS 31 계열은 국토교통부 고시 제2026-92호로 개정되어 2026. 3. 1.부터 시행 중입니다. ② 별표 1의6은 규모 요건을 갖춘 다중이용시설을 <strong>신축</strong>할 때 적용합니다(<개정 2021. 8. 27.>). 교육연구시설(바목)의 대상은 도서관(3천㎡ 이상)과 학원(1천㎡ 이상)뿐이므로, 「학교·교육」 · 「실험실」의 36 ㎥/인·h는 바목 값을 준용한 설계값이며 법정 하한은 기술기준 별표3 2.1.2(2)의 25 ㎥/인·h입니다. ③ 용도별 환기횟수(회/h)는 설계 권장 참고값입니다.</div></div>
+      <div class="nb pur mm-law-memo" style="margin-top:10px"><div class="nb-tit">📝 근거 메모 (2026. 11. 11. 확인)</div><div class="nb-txt">① 환기설비 설계기준의 코드는 <strong>KDS 31 25 20</strong>입니다(기술기준 별표3 1.3(5)) — 종전 표기 「KDS 31 25 00」을 바로잡았습니다. KDS 31 계열은 국토교통부 고시 제2026-92호로 개정되어 2026. 3. 1.부터 시행 중입니다. ② 별표 1의6은 규모 요건을 갖춘 다중이용시설을 <strong>신축</strong>할 때 적용합니다(<개정 2021. 8. 27.>). 교육연구시설(바목)의 대상은 도서관(3천㎡ 이상)과 학원(1천㎡ 이상)뿐이므로, 「학교·교육」 · 「실험실」의 36 ㎥/인·h는 바목 값을 준용한 설계값이며 법정 하한은 기술기준 별표3 2.1.2(2)의 25 ㎥/인·h입니다. ③ 용도별 환기횟수(회/h)는 설계 권장 참고값입니다 — KDS 31 25 20 : 2026 에는 회/h 표가 없고 실 용도별 배기량(표 4.5-1: 공중화장실 25 / 35 L/s · 기구, 상업시설 주방 3.5 L/s · ㎡, 주차장 3.7 L/s · ㎡)과 주거 주방 연속운전 5회/h(표 4.7.4-1)를 제시합니다. ④ (2026. 11. 12. 확인) KDS 31 25 20 : 2026 표 4.4-1 은 학교시설 필요 환기량을 <strong>21.6 ㎥/인·h</strong>(학교보건법 시행규칙 별표 2)로 제시합니다 — 「학교·교육」 36 ㎥/인·h 는 그보다 큰 설계값입니다(정밀검토 B12).</div></div>
 
       <!-- ── 관련 자료 ── -->
       <div class="modal-sec">📋 관련 법령 및 기준 자료</div>
