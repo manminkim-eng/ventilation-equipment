@@ -5,7 +5,8 @@ const repo=path.resolve(process.argv[2]),out=path.resolve(process.argv[3]);fs.mk
 const VW=1440,VH=900,DSF=1.25,PORT=8898;
 /* 예제 A = 사무실(업무시설) · 바닥 500 ㎡ · 층고 3.0 m · 재실 100명 · 외기 100 % · 여유율 10 % · 제1종
    예제 B = 공동주택 세대 · 84 ㎡ · 2.3 m · 외기 100 % · 여유율 10 % · 제1종
-   다중 구역 = 사무실 500 ㎡/3.0 m/100명 · 회의실 60 ㎡/3.0 m/20명 · 화장실 30 ㎡/3.0 m · 주차장 2,500 ㎡/3.3 m · 여유율 10 % */
+   다중 구역 = 사무실 500 ㎡/3.0 m/100명 · 회의실 60 ㎡/3.0 m/20명 · 화장실 30 ㎡/3.0 m · 주차장 2,500 ㎡/3.3 m · 여유율 10 %
+   v6.1.10: 예제 A + 「다중이용시설 규모 요건 충족」 끔(값 불변 · 표기만) · 로비 200 ㎡ × 3.0 m(인원 비움 → KDS 4.4(2) 기본 적용) */
 const FREEZE=`(()=>{const T=new Date(2026,10,12,10,0,0).getTime();const D=Date;class F extends D{constructor(...a){if(a.length)super(...a);else super(T);}static now(){return T;}}window.Date=F;window.alert=()=>{};window.confirm=()=>true;try{localStorage.clear();localStorage.setItem('pwa-dismissed-ventilation','1');localStorage.setItem('pwa-welcome-ventilation','1')}catch(e){}})()`;
 const HIDE='#pwa-banner,#pwa-install-banner,.pwa-banner,#ios-modal,#toast,.toast{display:none!important}';
 const HELP=`window.__vis=e=>e&&e.getClientRects().length>0;
@@ -20,6 +21,8 @@ window.__set=(id,v)=>{document.getElementById(id).value=v;};
 window.__in=(id,v)=>{const e=document.getElementById(id);e.value=v;e.dispatchEvent(new Event('input',{bubbles:true}));};
 window.__proj=()=>{__set('projName','만민 건축사 사옥 신축공사');__set('projUser','김만민');__set('projDate','2026-11-12');};
 window.__A=()=>{resetAll();__tab('calc');__proj();selectBtype('office');__in('area','500');__in('height','3.0');__set('vol','');__set('persons','100');__set('oaRatio','100');__set('margin','10');__set('ventType','1종');doCalc();window.scrollTo(0,0);};
+window.__S=()=>{__A();document.getElementById('scaleOk').checked=false;doCalc();};
+window.__L=()=>{resetAll();__tab('calc');__proj();selectBtype('lobby');__in('area','200');__in('height','3.0');__set('vol','');__set('persons','');__set('oaRatio','100');__set('margin','10');__set('ventType','1종');doCalc();window.scrollTo(0,0);};
 window.__B=()=>{resetAll();__tab('calc');__proj();selectBtype('apt');__in('area','84');__in('height','2.3');__set('vol','');__set('persons','');__set('oaRatio','100');__set('margin','10');__set('ventType','1종');doCalc();window.scrollTo(0,0);};
 window.__M=()=>{__tab('multi');document.getElementById('multiTbody').innerHTML='';multiRowId=0;
   [['사무실','office',500,3.0,100],['회의실','meet',60,3.0,20],['화장실','wc',30,3.0,''],['지하주차장','park',2500,3.3,'']].forEach(([nm,id,a,h,p])=>{addMultiRow();const r=multiRowId;
@@ -29,7 +32,7 @@ window.__MK=()=>{__M();addMultiRow();const r=multiRowId;__set('mn_'+r,'강당');
   document.getElementById('multiKds').checked=true;calcMulti();window.scrollTo(0,0);};
 window.__ex=()=>{const R=calcResult;return {bt:R.btype.id,btNm:R.btype.nm,basis:R.btype.basis,pq:R.btype.pq||null,aq:R.btype.aq||null,pqBasis:R.btype.pqBasis,
   area:R.area,h:R.h,vol:R.vol,n:R.n,persons:R.persons,oaRatio:R.oaRatio,marginPct:R.marginPct,ventType:R.ventType,
-  Q_law:R.Q_law,Q_person:R.Q_person,Q_base:R.Q_base,Q_design:R.Q_design,Q_oa:R.Q_oa,Q_final:R.Q_final,reqTxt:R.reqTxt,reqBasis:R.reqBasis,Q_kds:R.Q_kds||0,kdsTxt:R.kdsTxt||'',kdsApply:!!R.kdsApply,kdsNm:R.kdsNm||'',
+  Q_law:R.Q_law,Q_person:R.Q_person,Q_base:R.Q_base,Q_design:R.Q_design,Q_oa:R.Q_oa,Q_final:R.Q_final,reqTxt:R.reqTxt,reqBasis:R.reqBasis,Q_kds:R.Q_kds||0,kdsTxt:R.kdsTxt||'',kdsApply:!!R.kdsApply,kdsAuto:!!R.kdsAuto,reqLbl:R.reqLbl||'',kdsNm:R.kdsNm||'',
   hero:document.getElementById('heroVal').textContent,sum:[...document.querySelectorAll('.sum-bar .sum-item')].map(e=>e.textContent.trim())};};
 window.__mex=()=>({rows:[...document.querySelectorAll('#multiTbody tr')].map(tr=>{const r=tr.id.replace('mr_','');const bt=BTYPE_DATA.find(b=>b.id===document.getElementById('mt_'+r).value);
   return {nm:document.getElementById('mn_'+r).value,bt:bt.id,btNm:bt.nm,n:bt.rate,pq:bt.pq||null,aq:bt.aq||null,area:+document.getElementById('ma_'+r).value,h:+document.getElementById('mh_'+r).value,vol:+document.getElementById('mv_'+r).value,
@@ -41,8 +44,10 @@ const SHOTS=[
  {id:'s02_tabs',clip:'.hdr-shell',m:[['.tab-bar .tb[data-tab="calc"]','환기량 산정'],['.tab-bar .tb[data-tab="multi"]','다중 구역 산정'],['.tab-bar .tb[data-tab="guide"]','설계 기준표'],['.tab-bar .tb[data-tab="a4"]','A4 미리보기'],['.tb-manual','매뉴얼'],['.hdr-right','근거 기준']]},
  {id:'s03_project',clip:'card:STEP 1',m:[['#projName','공사명'],['#projUser','작성자'],['#projDate','작성일']]},
  {id:'s04_btype',clip:'card:STEP 2',m:[['#btypeGrid','용도 18종(직접입력 포함)'],['#bt_office','선택한 용도'],['#selRate','기준 환기횟수'],['#selBasis','산출 기준']]},
- {id:'s05_input',clip:'.col-input',m:[['#area','바닥면적'],['#height','층고'],['#vol','체적(자동 · 직접)'],['#persons','재실 인원'],['#oaRatio','외기도입 비율'],['#margin','여유율'],['#ventType','환기 방식'],['.calc-btn','환기량 산정하기'],['.col-input .reset-btn','전체 초기화'],['.col-input .duct-link-btn','덕트 규격 산정기 연동'],['#kdsApply','KDS 4.4(3) 권장 적용']]},
+ {id:'s05_input',clip:'.col-input',m:[['#area','바닥면적'],['#height','층고'],['#vol','체적(자동 · 직접)'],['#persons','재실 인원'],['#oaRatio','외기도입 비율'],['#margin','여유율'],['#ventType','환기 방식'],['.calc-btn','환기량 산정하기'],['.col-input .reset-btn','전체 초기화'],['.col-input .duct-link-btn','덕트 규격 산정기 연동'],['#scaleOk','다중이용시설 규모 요건 충족'],['#kdsApply','KDS 4.4(3) 권장 적용']]},
  {id:'s06_result',clip:'card:STEP 4',m:[['#heroMain','기준 환기량 Max(체적 · 법정)'],['#r_vol','체적 V'],['#r_n','환기횟수 N'],['#r_design','설계 환기량(여유율)'],['#personCheck','법정 필요환기량 검토'],['#formulaEq','산출 근거'],['#resultTbody','결과 표'],['#ductLinkMain','덕트 규격 산정기 연동'],['#kdsCheck','KDS 4.4(3) 최소 외기량 비교']]},
+ {id:'s06b_scale_off',pre:"__S()",wait:700,clip:'#personCheck',post:"__A()",m:[['#personCheckTxt','필요환기량(설계값) — 법정 하한 25 ㎥/인·h']]},
+ {id:'s06c_lobby',pre:"__L()",wait:700,clip:'card:STEP 4',post:"__A()",m:[['#heroMain','기준 환기량 = KDS 최소 외기량'],['#kdsCheck','4.4(2) — 법정값 없는 용도 기본 적용'],['#resultTbody','KDS 최소 외기량(4.4(2) 기본) 행']]},
  {id:'s07_result_b',pre:"__B()",wait:700,clip:'card:STEP 4',post:"__A()",m:[['#heroMain','공동주택 0.5회/h — 설비규칙 제11조①'],['#resultTbody','법정 필요환기량 행 없음(체적 기준)'],['#kdsCheck','KDS 최소 외기량이 더 큼 — 비교만']]},
  {id:'s08_multi',pre:"__M()",wait:700,clip:'card:다중 구역 환기량',m:[['#multiMargin','여유율'],['#multiKds','KDS 4.4(3) 권장 적용 — 체크 시 반영'],['#multiTbl thead','용도 · 면적 · 층고 · 체적 · 인원 · 환기횟수 · KDS 최소 외기량 · 기준 · 설계'],['#multiTbody tr:nth-child(4)','지하주차장 — 27 ㎥/㎡·h(법정)'],['#multiTotalQ','전체 합계'],['#multiSumNote','합계 올림 · 음수 면적 행 각주']]},
  {id:'s09_multi_sum',clip:'card:다중 구역 산정 요약',m:[['#multiSummaryBoxes','기준 · 설계 합계 · 구역 수'],['#multiDuctNote','덕트 설계 참고']]},
@@ -68,6 +73,8 @@ const SHOTS=[
   if(S.pre){try{await pg.evaluate(S.pre);}catch(e){errs.push(S.id+' pre '+e.message);}}
   await pg.waitForTimeout(S.wait||600);
   if(S.id==='s01_overview'){ex.A=await pg.evaluate('__ex()');ex.tables=await pg.evaluate('__tables()');}
+  if(S.id==='s06b_scale_off')ex.S=await pg.evaluate('__ex()');
+  if(S.id==='s06c_lobby')ex.L=await pg.evaluate('__ex()');
   if(S.id==='s07_result_b')ex.B=await pg.evaluate('__ex()');
   if(S.id==='s08_multi')ex.M=await pg.evaluate('__mex()');
   if(S.id==='s09b_multi_kds')ex.MK=await pg.evaluate('__mex()');
