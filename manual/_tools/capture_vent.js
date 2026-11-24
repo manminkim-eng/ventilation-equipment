@@ -44,7 +44,7 @@ const SHOTS=[
  {id:'s05_input',clip:'.col-input',m:[['#area','바닥면적'],['#height','층고'],['#vol','체적(자동 · 직접)'],['#persons','재실 인원'],['#oaRatio','외기도입 비율'],['#margin','여유율'],['#ventType','환기 방식'],['.calc-btn','환기량 산정하기'],['.col-input .reset-btn','전체 초기화'],['.col-input .duct-link-btn','덕트 규격 산정기 연동'],['#kdsApply','KDS 4.4(3) 권장 적용']]},
  {id:'s06_result',clip:'card:STEP 4',m:[['#heroMain','기준 환기량 Max(체적 · 법정)'],['#r_vol','체적 V'],['#r_n','환기횟수 N'],['#r_design','설계 환기량(여유율)'],['#personCheck','법정 필요환기량 검토'],['#formulaEq','산출 근거'],['#resultTbody','결과 표'],['#ductLinkMain','덕트 규격 산정기 연동'],['#kdsCheck','KDS 4.4(3) 최소 외기량 비교']]},
  {id:'s07_result_b',pre:"__B()",wait:700,clip:'card:STEP 4',post:"__A()",m:[['#heroMain','공동주택 0.5회/h — 설비규칙 제11조①'],['#resultTbody','법정 필요환기량 행 없음(체적 기준)'],['#kdsCheck','KDS 최소 외기량이 더 큼 — 비교만']]},
- {id:'s08_multi',pre:"__M()",wait:700,clip:'card:다중 구역 환기량',m:[['#multiMargin','여유율'],['#multiKds','KDS 4.4(3) 권장 적용 — 체크 시 반영'],['#multiTbl thead','용도 · 면적 · 층고 · 체적 · 인원 · 환기횟수 · KDS 최소 외기량 · 기준 · 설계'],['#multiTbody tr:nth-child(4)','지하주차장 — 27 ㎥/㎡·h(법정)'],['#multiTotalQ','전체 합계']]},
+ {id:'s08_multi',pre:"__M()",wait:700,clip:'card:다중 구역 환기량',m:[['#multiMargin','여유율'],['#multiKds','KDS 4.4(3) 권장 적용 — 체크 시 반영'],['#multiTbl thead','용도 · 면적 · 층고 · 체적 · 인원 · 환기횟수 · KDS 최소 외기량 · 기준 · 설계'],['#multiTbody tr:nth-child(4)','지하주차장 — 27 ㎥/㎡·h(법정)'],['#multiTotalQ','전체 합계'],['#multiSumNote','합계 올림 · 음수 면적 행 각주']]},
  {id:'s09_multi_sum',clip:'card:다중 구역 산정 요약',m:[['#multiSummaryBoxes','기준 · 설계 합계 · 구역 수'],['#multiDuctNote','덕트 설계 참고']]},
  {id:'s09b_multi_kds',pre:"__MK()",wait:700,clip:'card:다중 구역 환기량',m:[['#multiKds','체크 — KDS 4.4(3) 권장 적용'],['#multiTbody tr:nth-child(5) td:nth-child(9)','강당 — KDS 최소 외기량이 체적 기준보다 큼 → 적용'],['#multiTbody tr:nth-child(5) td:nth-child(10)','기준 환기량 = KDS 최소 외기량'],['#multiTotalQ','합계에 반영']]},
  {id:'s10_guide_rate',pre:"__tab('guide');scrollTo(0,0)",wait:700,clip:'card:용도별 환기횟수',m:[['#guideRateTable','용도 · 회/h · 산출 기준'],['in:용도별 환기횟수>>.formula-box','환기량 산출식']]},
@@ -52,7 +52,7 @@ const SHOTS=[
  {id:'s12_guide_type',clip:'card:환기 방식별',union:'card:1인당 외기량',m:[]},
  {id:'s13_modal',pre:"__tab('calc');scrollTo(0,0);showGuide();document.querySelector('#guideModal .modal-box').scrollTop=0",wait:700,fixed:true,clip:'#guideModal .modal-box',m:[]},
  {id:'s14_modal_law',pre:"(()=>{const b=document.querySelector('#guideModal .modal-box');const s=__find('msec:법령 적용 기준');b.scrollTop+=s.getBoundingClientRect().top-b.getBoundingClientRect().top-70;})()",wait:500,fixed:true,post:"closeGuide()",clip:'#guideModal .modal-box',m:[]},
- {id:'s15_a4',pre:"__A();__tab('a4');scrollTo(0,0)",wait:1500,clip:'viewport',m:[['.btn-print','인쇄 / PDF'],['.btn-jpg','JPG 저장'],['.btn-duct','덕트 계산기'],['#a4Page','A4 환기량 산정서']]},
+ {id:'s15_a4',pre:"__A();__tab('a4');scrollTo(0,0)",wait:1500,clip:'viewport',m:[['.btn-print','인쇄 / PDF'],['.btn-jpg','JPG 저장'],['.btn-duct','덕트 계산기'],['#a4Page','A4 환기량 산정서'],['#a4MultiNote','다중 구역 결과는 CSV 안내']]},
  {id:'s16_a4page',clip:'#a4Page',m:[['a4sub:0','건물(공간) 개요'],['a4sub:1','환기량 산출 근거'],['a4sub:2','덕트 규격 산정 연동']]},
 ];
 (async()=>{
