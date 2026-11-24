@@ -796,7 +796,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
               <div class="input-sfx"><input class="finput" id="vol" type="number" min="0" placeholder="자동계산 또는 직접입력"><span class="sfx">m³</span></div>
             </div>
             <div class="fgrp">
-              <label class="flbl">재실 인원 (명) <span style="font-size:11px;color:#94a3b8;">선택입력</span></label>
+              <label class="flbl">재실 인원 (명) <span style="font-size:11px;color:#94a3b8;">예상 최대 이용인원 · 선택입력</span></label>
               <div class="input-sfx"><input class="finput" id="persons" type="number" min="0" placeholder="인원수"><span class="sfx">명</span></div>
             </div>
           </div>
@@ -960,6 +960,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
         </tfoot>
       </table>
     </div>
+    <div id="multiSumNote" style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5;">※ 전체 합계는 구역별 원값을 더한 뒤 올림 — 행별 올림 값의 합과 1~2 m³/h 차이 날 수 있음 · 면적이 음수인 행은 면적 기준(법정 · KDS)이 빠지고, 체적을 직접 입력했으면 체적 기준만 합계에 들어감</div>
   </div>
 
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
@@ -1002,7 +1003,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
         <div class="formula-eq">Q = V × N&nbsp;&nbsp;&nbsp;[m³/h]<br><br>Q : 체적 기준 환기량 [m³/h]<br>V : 환기 공간의 체적 [m³] = 바닥면적[m²] × 층고[m]<br>N : 기준 환기횟수 [회/h]</div>
         <div class="formula-note">
           ※ 체적 V는 건물 단면 형상에 따라 실제 체적(경사천장 등)을 적용합니다.<br>
-          ※ 외기도입량은 전체 환기량의 최소 30% 이상 확보 (공조방식에 따라 상이)<br>
+          ※ (설계 참고 · 법정 기준 아님) 외기도입 비율은 공조방식에 따라 정함<br>
           ※ 기준 환기량 = Max(체적 기준, 법정 필요환기량 — 설비규칙 별표 1의6 · 기술기준 별표3 2.1.2)<br>
           ※ 설계 환기량은 기준 환기량에 여유율(10~20%) 적용 권장
         </div>
@@ -1071,6 +1072,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
     <button class="btn-exp btn-jpg" onclick="exportJpgA4()">🖼️ JPG 저장</button>
     <a class="btn-exp btn-duct" href="https://manminkim-eng.github.io/Air-Conditioning-Duct/" target="_blank">💨 덕트 계산기</a>
     <span class="export-status" id="exportStatus"></span>
+    <span id="a4MultiNote" style="flex-basis:100%;font-size:11px;color:#64748b;line-height:1.5;">ℹ️ A4 산정서는 [환기량 산정] 탭의 단일 산정 결과입니다 — 다중 구역 결과는 [다중 구역 산정] 탭의 「📥 CSV 내보내기」로 저장하세요.</span>
   </div>
   <div class="a4-wrap">
     <div class="a4-scale-wrap" id="a4Content">
@@ -1237,7 +1239,7 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
       <!-- ── 시스템 정보 ── -->
       <div class="nb pur" style="margin-top:12px;">
         <div class="nb-txt">📌 <strong>MANMIN-Ver6.1</strong> — 기계환기설비 환기량 산정 시스템<br>
-        🏛️ 건축물의 설비기준 규칙 제11조 · 기계설비 기술기준 기반 | 📅 2025년 최신 기준 반영</div>
+        🏛️ 건축물의 설비기준 규칙 제11조 · 기계설비 기술기준 기반 | 📅 2026. 8. 24. 설비규칙 · 2026. 7. 8. 기술기준 기준</div>
       </div>
 
     </div><!-- /modal-body -->
@@ -1255,20 +1257,20 @@ footer.mm-foot{position:relative;z-index:1;border-top:1px solid #e4e9f0;backgrou
 // ═══════════════════════════════════════════════
 const BTYPE_DATA = [
   { id:'apt', ico:'🏠', nm:'공동주택', val:'0.5', rate:0.5, basis:'설비규칙 제11조① (법정 최소)', note:'30세대 이상 신축공동주택등', pq:null, pqBasis:'' },
-  { id:'office', ico:'🏢', nm:'사무실', val:'1.0', rate:1.0, basis:'설계권장·체적기준', note:'일반사무, 업무용', pq:29, pqBasis:'설비규칙 별표 1의6 아목(업무시설)' },
-  { id:'store', ico:'🛒', nm:'판매시설', val:'1.5', rate:1.5, basis:'설계권장·체적기준', note:'백화점·쇼핑몰', pq:29, pqBasis:'설비규칙 별표 1의6 다목(판매시설)' },
+  { id:'office', ico:'🏢', nm:'사무실', val:'1.0', rate:1.0, basis:'설계권장·체적기준', note:'일반사무, 업무용', pq:29, pqBasis:'설비규칙 별표 1의6 아목(업무시설 — 연면적 3천㎡ 이상 대상 · 미만은 기술기준 별표3 2.1.2(2) 25 ㎥/인·h 이상)' },
+  { id:'store', ico:'🛒', nm:'판매시설', val:'1.5', rate:1.5, basis:'설계권장·체적기준', note:'백화점·쇼핑몰', pq:29, pqBasis:'설비규칙 별표 1의6 다목(판매시설 — 대규모점포 대상 · 그 밖은 기술기준 별표3 2.1.2(2) 25 ㎥/인·h 이상)' },
   { id:'rest', ico:'🍽️', nm:'식당·음식점', val:'2.0', rate:2.0, basis:'설계권장·체적기준', note:'일반음식점', pq:25, pqBasis:'기술기준 별표3 2.1.2(2) 일반 건축물' },
   { id:'hotel', ico:'🏨', nm:'숙박·호텔', val:'1.5', rate:1.5, basis:'설계권장·체적기준', note:'호텔·모텔·여관', pq:25, pqBasis:'기술기준 별표3 2.1.2(2) 일반 건축물' },
-  { id:'hospital', ico:'🏥', nm:'병원·의료', val:'2.0', rate:2.0, basis:'설계권장·체적기준', note:'병원·의원·한의원', pq:36, pqBasis:'설비규칙 별표 1의6 마목(의료시설)' },
-  { id:'school', ico:'🏫', nm:'학교·교육', val:'1.5', rate:1.5, basis:'설계권장·체적기준', note:'학교·학원', pq:36, pqBasis:'설비규칙 별표 1의6 바목 값 준용(바목 대상은 도서관 3천㎡ · 학원 1천㎡ 이상 — 학교는 대상 아님 · 법정 하한 25 ㎥/인·h: 기술기준 별표3 2.1.2(2))' },
-  { id:'lib', ico:'📚', nm:'도서관', val:'1.0', rate:1.0, basis:'설계권장·체적기준', note:'공공도서관', pq:36, pqBasis:'설비규칙 별표 1의6 바목(교육연구시설 — 도서관 연면적 3천㎡ 이상)' },
-  { id:'theater', ico:'🎬', nm:'공연·영화관', val:'2.5', rate:2.5, basis:'설계권장·체적기준', note:'극장·영화관', pq:29, pqBasis:'설비규칙 별표 1의6 나목(문화 및 집회시설)' },
-  { id:'sport', ico:'🏋️', nm:'체육·스포츠', val:'3.0', rate:3.0, basis:'설계권장·체적기준', note:'체육관·헬스장', pq:29, pqBasis:'설비규칙 별표 1의6 나목(문화 및 집회시설)' },
-  { id:'park', ico:'🅿️', nm:'주차장', val:'5.0', rate:5.0, basis:'설계권장·체적기준', note:'지하주차장 등', aq:27, pqBasis:'설비규칙 별표 1의6 자목(자동차 관련 시설)' },
+  { id:'hospital', ico:'🏥', nm:'병원·의료', val:'2.0', rate:2.0, basis:'설계권장·체적기준', note:'병원·의원·한의원', pq:36, pqBasis:'설비규칙 별표 1의6 마목(의료시설 — 연면적 2천㎡ 이상 또는 병상 100개 이상 대상 · 미만은 기술기준 별표3 2.1.2(2) 25 ㎥/인·h 이상 · 수술실 등 특수실은 소관 중앙행정기관의 장이 달리 정할 수 있음(비고 다))' },
+  { id:'school', ico:'🏫', nm:'학교·교육', val:'1.5', rate:1.5, basis:'설계권장·체적기준', note:'학교·학원', pq:36, pqBasis:'설비규칙 별표 1의6 바목 값 준용(바목 대상은 도서관 3천㎡ · 학원 1천㎡ 이상 — 학교는 대상 아님 · 법정 하한 25 ㎥/인·h: 기술기준 별표3 2.1.2(2)) · 교실 환기량 21.6 ㎥/인·h(학교보건법 시행규칙 별표 2)' },
+  { id:'lib', ico:'📚', nm:'도서관', val:'1.0', rate:1.0, basis:'설계권장·체적기준', note:'공공도서관', pq:36, pqBasis:'설비규칙 별표 1의6 바목(교육연구시설 — 도서관 연면적 3천㎡ 이상 대상 · 미만은 기술기준 별표3 2.1.2(2) 25 ㎥/인·h 이상)' },
+  { id:'theater', ico:'🎬', nm:'공연·영화관', val:'2.5', rate:2.5, basis:'설계권장·체적기준', note:'극장·영화관', pq:29, pqBasis:'설비규칙 별표 1의6 나목(공연장 연면적 1천㎡ 이상(실내) · 영화상영관 대상 · 미만은 기술기준 별표3 2.1.2(2) 25 ㎥/인·h 이상)' },
+  { id:'sport', ico:'🏋️', nm:'체육·스포츠', val:'3.0', rate:3.0, basis:'설계권장·체적기준', note:'체육관·헬스장', pq:29, pqBasis:'29 ㎥/인·h 설계값 — 설비규칙 별표 1의6 나목 4)는 관람석 바닥면적 1천㎡ 이상 체육시설만 대상 · 그 밖은 기술기준 별표3 2.1.2(2) 25 ㎥/인·h 이상' },
+  { id:'park', ico:'🅿️', nm:'주차장', val:'5.0', rate:5.0, basis:'설계권장·체적기준', note:'지하주차장 등', aq:27, pqBasis:'설비규칙 별표 1의6 자목(자동차 관련 시설 — 연면적 2천㎡ 이상 실내주차장 대상 · 기계식주차장 제외)' },
   { id:'wc', ico:'🚻', nm:'화장실', val:'10.0', rate:10.0, basis:'설계권장·체적기준', note:'공중·업무용화장실', pq:null, pqBasis:'' },
   { id:'kitchen', ico:'🍳', nm:'주방·조리실', val:'20.0', rate:20.0, basis:'설계권장·체적기준', note:'업소용 주방', pq:null, pqBasis:'' },
   { id:'lab', ico:'🔬', nm:'실험실', val:'6.0', rate:6.0, basis:'설계권장·체적기준', note:'연구·실험공간', pq:36, pqBasis:'설비규칙 별표 1의6 바목 값 준용(실험실은 별표 1의6 대상 아님 · 법정 하한 25 ㎥/인·h: 기술기준 별표3 2.1.2(2))' },
-  { id:'meet', ico:'📊', nm:'회의실', val:'1.5', rate:1.5, basis:'설계권장·체적기준', note:'세미나·컨퍼런스', pq:29, pqBasis:'설비규칙 별표 1의6 아목(업무시설)' },
+  { id:'meet', ico:'📊', nm:'회의실', val:'1.5', rate:1.5, basis:'설계권장·체적기준', note:'세미나·컨퍼런스', pq:29, pqBasis:'설비규칙 별표 1의6 아목(업무시설 — 연면적 3천㎡ 이상 대상 · 미만은 기술기준 별표3 2.1.2(2) 25 ㎥/인·h 이상)' },
   { id:'lobby', ico:'🚪', nm:'로비·복도', val:'0.5', rate:0.5, basis:'설계권장·체적기준', note:'공용공간', pq:null, pqBasis:'' },
   { id:'storage', ico:'📦', nm:'창고·기계실', val:'0.3', rate:0.3, basis:'설계권장·체적기준', note:'비작업공간', pq:null, pqBasis:'' },
   { id:'custom',  ico:'⚙️', nm:'직접입력',    val:'—',    rate:null, basis:'사용자 지정',      note:'환기횟수 직접 입력', pq:25, pqBasis:'기술기준 별표3 2.1.2(2) 일반 건축물' },
@@ -1373,7 +1375,7 @@ function renderGuideTable() {
 }
 
 // ── 산정 ──
-function doCalc() {
+function doCalc(quiet) {
   if (!selectedBtype) { showToast('⚠️ 건물 용도를 먼저 선택하세요'); return; }
   
   let n = selectedBtype.rate;
@@ -1462,7 +1464,7 @@ function doCalc() {
   document.getElementById('formulaEq').innerHTML = `Q = V × N = ${vol.toFixed(1)} × ${n} = <b>${Math.ceil(Q_law).toLocaleString()} m³/h</b>`;
   document.getElementById('formulaNote').innerHTML = `
     용도: ${selectedBtype.ico} ${selectedBtype.nm} · 기준 환기횟수: ${n} 회/h<br>
-    체적: ${vol.toFixed(1)} m³ (${area}m² × ${h}m)<br>
+    체적: ${vol.toFixed(1)} m³ (${(area > 0 && h > 0 && (area * h).toFixed(2) === vol.toFixed(2)) ? `${area}m² × ${h}m` : '직접 입력'})${area > 0 ? '' : ' · 면적 없음 → KDS · 면적 기준 비교 생략'}<br>
     설계 환기량: ${Math.ceil(Q_base).toLocaleString()} × (1 + ${marginPct}%) = <b>${Math.ceil(Q_design).toLocaleString()} m³/h</b>
   `;
   
@@ -1482,7 +1484,7 @@ function doCalc() {
     <tr><td>외기 도입 비율</td><td>${oaRatio}</td><td>%</td><td>OA Ratio</td></tr>
     <tr class="hl"><td><b>설계 환기량</b></td><td><b>${Math.ceil(Q_design).toLocaleString()}</b></td><td>m³/h</td><td>기준 환기량 × (1+여유율)</td></tr>
     <tr><td>외기 도입량</td><td>${Math.ceil(Q_oa).toLocaleString()}</td><td>m³/h</td><td>설계량 × OA비율</td></tr>
-    <tr class="total"><td><b>최종 설계 환기량</b></td><td><b>${Math.ceil(Q_final).toLocaleString()}</b></td><td>m³/h</td><td>Max(체적·법정) × (1+여유율)</td></tr>
+    <tr class="total"><td><b>최종 설계 환기량</b></td><td><b>${Math.ceil(Q_final).toLocaleString()}</b></td><td>m³/h</td><td>Max(체적·법정${kdsApply ? '·KDS' : ''}) × (1+여유율)</td></tr>
   `;
   
   // 덕트 링크 업데이트
@@ -1492,7 +1494,8 @@ function doCalc() {
   
   // A4 업데이트
   updateA4();
-  
+  window.__calcOk = true;   // v6.1.9 — refreshA4 성공 판정
+  if (quiet === true) return;
   showToast(`✅ 설계 환기량: ${Math.ceil(Q_design).toLocaleString()} m³/h 산정 완료`);
 }
 
@@ -1504,6 +1507,10 @@ function updateA4() {
   const projName = document.getElementById('projName').value || '만민 건축사 사옥 신축공사';
   const projDate = document.getElementById('projDate').value || now.toISOString().split('T')[0];
   const projUser = document.getElementById('projUser').value || '김만민';
+  // v6.1.9 — 체적 직접 입력 · 면적 없음 표기(교차검증 P4)
+  const volAH = r.area > 0 && r.h > 0 && (r.area * r.h).toFixed(2) === r.vol.toFixed(2);
+  const volF = volAH ? 'V = A × h' : 'V 직접 입력';
+  const volN = volAH ? `${r.area}㎡ × ${r.h}m` : (r.area > 0 ? (r.h > 0 ? `A × h = ${(r.area * r.h).toFixed(2)} m³ 와 다름` : '직접 입력') : '면적 없음 — KDS · 면적 기준 비교 생략');
   
   document.getElementById('a4Body').innerHTML = `
     <div style="display:flex;justify-content:space-between;font-size:9px;color:#6b7280;margin-bottom:8px;padding:4px 8px;background:#f9fafb;border-radius:4px;">
@@ -1521,7 +1528,7 @@ function updateA4() {
     <table class="a4-tbl">
       <tr><th>항목</th><th>내용</th><th>항목</th><th>내용</th></tr>
       <tr><td>건물(공간) 용도</td><td><b>${r.btype.ico} ${r.btype.nm}</b></td><td>환기 방식</td><td>${r.ventType}</td></tr>
-      <tr><td>바닥 면적</td><td>${r.area} m²</td><td>층고 (천장고)</td><td>${r.h} m</td></tr>
+      <tr><td>바닥 면적</td><td>${r.area > 0 ? r.area + ' m²' : '— (입력 없음)'}</td><td>층고 (천장고)</td><td>${r.h > 0 ? r.h + ' m' : '— (입력 없음)'}</td></tr>
       <tr><td>환기 체적 V</td><td>${r.vol.toFixed(2)} m³</td><td>재실 인원</td><td>${r.persons > 0 ? r.persons + '명' : '—'}</td></tr>
       <tr><td>외기 도입 비율</td><td>${r.oaRatio}%</td><td>여유율</td><td>${r.marginPct}%</td></tr>
     </table>
@@ -1531,14 +1538,14 @@ function updateA4() {
       <thead><tr><th>구분</th><th>산출식</th><th>수치</th><th>단위</th><th>비고</th></tr></thead>
       <tbody>
         <tr><td>기준 환기횟수</td><td>N</td><td><b>${r.n}</b></td><td>회/h</td><td>${r.btype.basis}</td></tr>
-        <tr><td>환기 체적</td><td>V = A × h</td><td>${r.vol.toFixed(2)}</td><td>m³</td><td>${r.area}㎡ × ${r.h}m</td></tr>
+        <tr><td>환기 체적</td><td>${volF}</td><td>${r.vol.toFixed(2)}</td><td>m³</td><td>${volN}</td></tr>
         <tr><td>체적 기준 환기량</td><td>Q = V × N</td><td>${Math.ceil(r.Q_law).toLocaleString()}</td><td>m³/h</td><td>${r.btype.basis}</td></tr>
         ${r.Q_person > 0 ? `<tr><td>법정 필요환기량</td><td>${r.reqTxt}</td><td>${Math.ceil(r.Q_person).toLocaleString()}</td><td>m³/h</td><td>${r.reqBasis}</td></tr>` : ''}
         ${r.Q_kds > 0 ? `<tr><td>KDS 최소 외기량(권장)</td><td>${r.kdsTxt}</td><td>${Math.ceil(r.Q_kds).toLocaleString()}</td><td>m³/h</td><td>KDS 31 25 20 표 4.4-2 · 4.4(3) ${r.kdsApply ? '적용' : '비교만'}</td></tr>` : ''}
         <tr class="hl a4-th"><td><b>기준 환기량</b></td><td><b>Max(체적·법정${r.kdsApply ? '·KDS' : ''})</b></td><td><b>${Math.ceil(r.Q_base).toLocaleString()}</b></td><td>m³/h</td><td>큰 값 적용</td></tr>
         <tr><td>설계 환기량</td><td>Q_base × (1 + ${r.marginPct}%)</td><td>${Math.ceil(r.Q_design).toLocaleString()}</td><td>m³/h</td><td>여유율 반영</td></tr>
         <tr><td>외기 도입량</td><td>Q_design × ${r.oaRatio}%</td><td>${Math.ceil(r.Q_oa).toLocaleString()}</td><td>m³/h</td><td>OA 도입량</td></tr>
-        <tr class="hl a4-final"><td style="background:#164e63!important;color:#fde047;font-weight:900;">최종 설계 환기량</td><td style="background:#164e63!important;color:#fde047;">Max(체적·법정) × (1+여유율)</td><td style="background:#164e63!important;color:#fde047;font-weight:900;">${Math.ceil(r.Q_final).toLocaleString()}</td><td style="background:#164e63!important;color:#fde047;">m³/h</td><td style="background:#164e63!important;color:#a5f3fc;">권장 설계값</td></tr>
+        <tr class="hl a4-final"><td style="background:#164e63!important;color:#fde047;font-weight:900;">최종 설계 환기량</td><td style="background:#164e63!important;color:#fde047;">Max(체적·법정${r.kdsApply ? '·KDS' : ''}) × (1+여유율)</td><td style="background:#164e63!important;color:#fde047;font-weight:900;">${Math.ceil(r.Q_final).toLocaleString()}</td><td style="background:#164e63!important;color:#fde047;">m³/h</td><td style="background:#164e63!important;color:#a5f3fc;">권장 설계값</td></tr>
       </tbody>
     </table>
 
@@ -1564,13 +1571,24 @@ function updateA4() {
   requestAnimationFrame(scaleA4);
 }
 
+// ── v6.1.9 A4 최신성(교차검증 P1) — A4 탭 · 인쇄 · JPG 전에 현재 입력으로 다시 산정 ──
+function refreshA4() {
+  if (!calcResult) return true;
+  window.__calcOk = false;
+  doCalc(true);
+  if (window.__calcOk) return true;
+  const b = document.getElementById('a4Body');
+  if (b && !b.querySelector('.a4-stale')) b.insertAdjacentHTML('afterbegin', '<div class="a4-stale" style="margin-bottom:6px;padding:5px 8px;border:1px solid #d32f2f;border-radius:3px;color:#b71c1c;background:#fff5f5;font-size:9pt;font-weight:700;">⚠ 입력이 바뀌었으나 다시 산정하지 못했습니다 — [환기량 산정] 탭에서 다시 산정하세요(아래는 직전 산정 결과)</div>');
+  return false;
+}
+
 // ── 탭 전환 ──
 function showTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tb').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   document.querySelectorAll('.tb').forEach(b => { if(b.dataset.tab === id) b.classList.add('active'); });
-  if(id==='a4') requestAnimationFrame(scaleA4);
+  if(id==='a4'){ refreshA4(); requestAnimationFrame(scaleA4); }
 }
 
 // ── STEP 표시 ──
@@ -1783,6 +1801,7 @@ function exportPdf(){ printA4(); }
 /* v5.0 — 인쇄는 화면과 같은 #a4Page 를 쓴다(§2②). 표 길이 판정만 미리 돌린다(§16-13). */
 function printA4(){
   if(!calcResult){ showToast('⚠️ 먼저 환기량을 산정하세요'); return; }
+  if(!refreshA4()){ showToast('⚠️ 입력을 확인하고 다시 산정하세요'); return; }
   var panel=document.getElementById('tab-a4');
   var wasHidden=panel && !panel.classList.contains('active');
   if(wasHidden){ panel.style.visibility='hidden'; panel.style.display='block'; }
@@ -1957,6 +1976,7 @@ function mmOpenSheet(shots, base){
 }
 function exportJpgA4(){
   if(!calcResult){showToast('⚠️ 먼저 환기량을 산정하세요');return;}
+  if(!refreshA4()){showToast('⚠️ 입력을 확인하고 다시 산정하세요');return;}
   if(typeof html2canvas==='undefined'){
     showToast(location.protocol==='file:'
       ? '⚠️ html2canvas 를 불러오지 못했습니다 — 인터넷 연결을 확인하세요'
@@ -2379,8 +2399,10 @@ input[data-mm-warn]{outline:2px solid #d32f2f!important;outline-offset:1px;backg
 </style>
 <script id="mm-warn-cfg">
 window.MM_WARN_CFG={report:'#a4Body',rules:[
- {sel:'#oaRatio',empty:'100%',neg:true},{sel:'#margin',empty:'10%',neg:true},{sel:'#area',neg:true},{sel:'#height',neg:true},{sel:'#persons',neg:true},{sel:'#multiMargin',empty:'10%',neg:true},
- {sel:'[id^=mv_]',name:'실별 표 체적',neg:'음수 — 합계에서 빠짐(확인)'},{sel:'[id^=ma_],[id^=mh_],[id^=mp_]',name:'실별 표 입력',neg:true}]};
+ {sel:'#oaRatio',empty:'100%',neg:true,extra:(el,n)=>n>100?'100 % 초과 — 외기 도입량이 설계 환기량보다 큼(확인)':null},{sel:'#margin',empty:'10%',neg:true},{sel:'#area',neg:true},{sel:'#height',neg:true},
+ {sel:'#persons',neg:true,extra:(el,n)=>n%1?'소수 → '+Math.floor(n)+'명 적용':null},{sel:'#multiMargin',empty:'10%',neg:true},
+ {sel:'[id^=mv_]',name:'실별 표 체적',neg:'음수 — 합계에서 빠짐(확인)'},{sel:'[id^=ma_]',name:'실별 표 면적',neg:'음수 — 면적 기준(법정 · KDS) 빠짐 · 체적 직접 입력 시 체적 기준만 합계 포함(확인)'},
+ {sel:'[id^=mh_]',name:'실별 표 입력',neg:true},{sel:'[id^=mp_]',name:'실별 표 인원',neg:true,extra:(el,n)=>n%1?'소수 → '+Math.floor(n)+'명 적용':null}]};
 </script>
 <script id="mm-warn-js">
 (function(){
